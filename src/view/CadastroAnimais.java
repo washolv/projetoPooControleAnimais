@@ -190,14 +190,16 @@ public class CadastroAnimais extends javax.swing.JFrame {
 
         t.setBorder(javax.swing.BorderFactory.createTitledBorder("Pesquisar Animais"));
 
+        tblAnimal.setFont(new java.awt.Font("Arial", 0, 11)); // NOI18N
         tblAnimal.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "Tipo", "Nome", "Raça", "Idade", "Peso", "Quantidade Alimento", "Código Liberação"
+                "Tipo", "Nome", "Raça", "Idade", "Peso", "Quantidade Alimento", "Cód. Liberação"
             }
         ));
+        tblAnimal.setToolTipText("");
         jScrollPane1.setViewportView(tblAnimal);
 
         jLabel7.setText("Pesquisar ");
