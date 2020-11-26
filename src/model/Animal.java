@@ -26,6 +26,14 @@ public class Animal {
         this.raca = raca;
         this.alimento = alimento;
     }
+     public Animal( String nome, float peso, int idade, String tipo, String raca, float alimento) {
+        this.nome = nome;
+        this.peso = peso;
+        this.idade = idade;
+        this.tipo = tipo;
+        this.raca = raca;
+        this.alimento = alimento;
+    }
 
     
     

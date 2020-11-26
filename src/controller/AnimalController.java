@@ -42,19 +42,19 @@ public class AnimalController implements AcoesAnimais{
     }
 
     @Override
-    public ArrayList<Animal> pesquisar(String pesquisa) {
-        ArrayList<Animal> animal = listarAnimal();
-        if(pesquisa.equals("Mamifero")){
-            
-        }else{
-            
-        }
-        return animal;
+  public ArrayList<Animal> pesquisar(String pesquisa) {
+        ArrayList<Animal> animais = AnimalDAO.listarAnimal(pesquisa);
+
+        return animais;
     }
 
     @Override
     public boolean excluir(int id) {
         return true;
+    }
+    
+    public static void teste(){
+        
     }
     
     
