@@ -14,7 +14,8 @@ import model.Animal;
  */
 public class Mamifero extends Animal {
 
- 
+    public Mamifero() {
+    }
 
     public Mamifero(String nome, float peso, int idade, String tipo, String raca, float alimento) {
         super(nome, peso, idade, tipo, raca, alimento);

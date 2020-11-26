@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import model.Animal;
+import model.Ave;
 import model.Mamifero;
 
 /**
@@ -23,9 +24,13 @@ public class CadastroAnimais extends javax.swing.JFrame {
      */
     public String modoTela = "Criação";
     AnimalController controller = new AnimalController();
+    Animal animal = new Mamifero();
 
     public CadastroAnimais() {
         initComponents();
+        CarregaTabela();
+        txtCodLiberacao.setVisible(false);
+        lblCodLiberacao.setVisible(false);
     }
 
     /**
@@ -39,7 +44,7 @@ public class CadastroAnimais extends javax.swing.JFrame {
 
         jButton1 = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
-        jComboBox1 = new javax.swing.JComboBox<>();
+        boxAnimalCadastrar = new javax.swing.JComboBox<>();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
@@ -53,6 +58,8 @@ public class CadastroAnimais extends javax.swing.JFrame {
         txtQtdAlimento = new javax.swing.JTextField();
         jLabel8 = new javax.swing.JLabel();
         txtTipo = new javax.swing.JTextField();
+        txtCodLiberacao = new javax.swing.JTextField();
+        lblCodLiberacao = new javax.swing.JLabel();
         t = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblAnimal = new javax.swing.JTable();
@@ -70,10 +77,15 @@ public class CadastroAnimais extends javax.swing.JFrame {
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Cadastrar Animal"));
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Mamifero", "Ave", " " }));
-        jComboBox1.addActionListener(new java.awt.event.ActionListener() {
+        boxAnimalCadastrar.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Mamifero", "Ave" }));
+        boxAnimalCadastrar.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                boxAnimalCadastrarItemStateChanged(evt);
+            }
+        });
+        boxAnimalCadastrar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jComboBox1ActionPerformed(evt);
+                boxAnimalCadastrarActionPerformed(evt);
             }
         });
 
@@ -103,6 +115,14 @@ public class CadastroAnimais extends javax.swing.JFrame {
 
         jLabel8.setText("Tipo");
 
+        txtCodLiberacao.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtCodLiberacaoActionPerformed(evt);
+            }
+        });
+
+        lblCodLiberacao.setText("Código Liberação");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -116,15 +136,17 @@ public class CadastroAnimais extends javax.swing.JFrame {
                     .addComponent(jLabel4)
                     .addComponent(jLabel3)
                     .addComponent(jLabel1)
-                    .addComponent(jLabel8))
+                    .addComponent(jLabel8)
+                    .addComponent(lblCodLiberacao))
                 .addGap(44, 44, 44)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(txtCodLiberacao)
                     .addComponent(txtNome, javax.swing.GroupLayout.DEFAULT_SIZE, 231, Short.MAX_VALUE)
                     .addComponent(txtRaca, javax.swing.GroupLayout.DEFAULT_SIZE, 231, Short.MAX_VALUE)
                     .addComponent(txtIdade, javax.swing.GroupLayout.DEFAULT_SIZE, 231, Short.MAX_VALUE)
                     .addComponent(txtPeso, javax.swing.GroupLayout.DEFAULT_SIZE, 231, Short.MAX_VALUE)
                     .addComponent(txtQtdAlimento, javax.swing.GroupLayout.DEFAULT_SIZE, 231, Short.MAX_VALUE)
-                    .addComponent(jComboBox1, 0, 231, Short.MAX_VALUE)
+                    .addComponent(boxAnimalCadastrar, 0, 231, Short.MAX_VALUE)
                     .addComponent(txtTipo))
                 .addContainerGap(177, Short.MAX_VALUE))
         );
@@ -134,7 +156,7 @@ public class CadastroAnimais extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
-                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(boxAnimalCadastrar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel8)
@@ -159,23 +181,18 @@ public class CadastroAnimais extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel6)
                     .addComponent(txtQtdAlimento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap())
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtCodLiberacao, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblCodLiberacao))
+                .addGap(6, 6, 6))
         );
 
         t.setBorder(javax.swing.BorderFactory.createTitledBorder("Pesquisar Animais"));
 
         tblAnimal.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null}
+
             },
             new String [] {
                 "Tipo", "Nome", "Raça", "Idade", "Peso", "Quantidade Alimento"
@@ -215,9 +232,8 @@ public class CadastroAnimais extends javax.swing.JFrame {
                 .addGroup(tLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel7)
                     .addComponent(caixaAnimal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addGap(29, 29, 29)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         jButton2.setText("Alterar");
@@ -239,6 +255,11 @@ public class CadastroAnimais extends javax.swing.JFrame {
         jButton5.setText("Sair");
 
         jButton6.setText("Controle Acões");
+        jButton6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton6ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -292,9 +313,9 @@ public class CadastroAnimais extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
+    private void boxAnimalCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_boxAnimalCadastrarActionPerformed
 
-    }//GEN-LAST:event_jComboBox1ActionPerformed
+    }//GEN-LAST:event_boxAnimalCadastrarActionPerformed
 
     private void txtNomeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNomeActionPerformed
         // TODO add your handling code here:
@@ -322,9 +343,13 @@ public class CadastroAnimais extends javax.swing.JFrame {
             float peso = Float.parseFloat(txtPeso.getText());
             float qtdAlimento = Float.parseFloat(txtQtdAlimento.getText());
 
-            Animal animal = new Mamifero(nome, peso, idade, tipo, raca, qtdAlimento);
+            if (animal instanceof Mamifero) {
+                animal = new Mamifero(nome, peso, idade, tipo, raca, qtdAlimento);
+            } else {
+                int cod_liberacao = Integer.parseInt(txtCodLiberacao.getText());
+                animal = new Ave(cod_liberacao, idade, nome, peso, idade, tipo, raca, qtdAlimento);
+            }
             boolean retorno = controller.cadastrar(animal);
-
 
             if (retorno == true) {
                 JOptionPane.showMessageDialog(null, "Animal cadastrado com Sucesso", "Cadastro realizado", JOptionPane.INFORMATION_MESSAGE);
@@ -363,6 +388,27 @@ public class CadastroAnimais extends javax.swing.JFrame {
         txtQtdAlimento.setText(null);
         modoTela = "Criação";
     }//GEN-LAST:event_btnSalvarActionPerformed
+
+    private void txtCodLiberacaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCodLiberacaoActionPerformed
+    }//GEN-LAST:event_txtCodLiberacaoActionPerformed
+
+    private void boxAnimalCadastrarItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_boxAnimalCadastrarItemStateChanged
+        String tipo = (String) boxAnimalCadastrar.getSelectedItem();
+        if (tipo.equals("Mamifero")) {
+            txtCodLiberacao.setVisible(false);
+            lblCodLiberacao.setVisible(false);
+            animal = new Mamifero();
+        } else {
+            txtCodLiberacao.setVisible(true);
+            lblCodLiberacao.setVisible(true);
+            animal = new Ave();
+        }
+    }//GEN-LAST:event_boxAnimalCadastrarItemStateChanged
+
+    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
+        ControleAnimais c = new ControleAnimais();
+        c.setVisible(true);
+    }//GEN-LAST:event_jButton6ActionPerformed
     private void CarregaTabela() {
 
         ArrayList<Animal> listaAnimal;
@@ -370,18 +416,15 @@ public class CadastroAnimais extends javax.swing.JFrame {
 
         DefaultTableModel modelo = (DefaultTableModel) tblAnimal.getModel();
         modelo.setRowCount(0);
-
         for (Animal animal : listaAnimal) {
             modelo.addRow(new Object[]{
-                    animal.getTipo(),
-                    animal.getNome(),
-                    animal.getRaca(),
-                    animal.getIdade(),
-                    animal.getPeso(),
-                    animal.getAlimento(),
-            });
+                animal.getTipo(),
+                animal.getNome(),
+                animal.getRaca(),
+                animal.getIdade(),
+                animal.getPeso(),
+                animal.getAlimento()});
         }
-
     }
 
     public static void main(String args[]) {
@@ -426,6 +469,7 @@ public class CadastroAnimais extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JComboBox<String> boxAnimalCadastrar;
     private javax.swing.JButton btnSalvar;
     private javax.swing.JComboBox<String> caixaAnimal;
     private javax.swing.JButton jButton1;
@@ -433,7 +477,6 @@ public class CadastroAnimais extends javax.swing.JFrame {
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
-    private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -444,8 +487,10 @@ public class CadastroAnimais extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JLabel lblCodLiberacao;
     private javax.swing.JPanel t;
     private javax.swing.JTable tblAnimal;
+    private javax.swing.JTextField txtCodLiberacao;
     private javax.swing.JTextField txtIdade;
     private javax.swing.JTextField txtNome;
     private javax.swing.JTextField txtPeso;
