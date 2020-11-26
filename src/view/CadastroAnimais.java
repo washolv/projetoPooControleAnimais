@@ -65,7 +65,7 @@ public class CadastroAnimais extends javax.swing.JFrame {
         tblAnimal = new javax.swing.JTable();
         jLabel7 = new javax.swing.JLabel();
         caixaAnimal = new javax.swing.JComboBox<>();
-        jButton2 = new javax.swing.JButton();
+        btnAlterar = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
         btnSalvar = new javax.swing.JButton();
         jButton5 = new javax.swing.JButton();
@@ -195,7 +195,7 @@ public class CadastroAnimais extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Tipo", "Nome", "Raça", "Idade", "Peso", "Quantidade Alimento"
+                "Tipo", "Nome", "Raça", "Idade", "Peso", "Quantidade Alimento", "Código Liberação"
             }
         ));
         jScrollPane1.setViewportView(tblAnimal);
@@ -203,6 +203,11 @@ public class CadastroAnimais extends javax.swing.JFrame {
         jLabel7.setText("Pesquisar ");
 
         caixaAnimal.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Mamifero", "Aves" }));
+        caixaAnimal.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                caixaAnimalItemStateChanged(evt);
+            }
+        });
         caixaAnimal.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 caixaAnimalActionPerformed(evt);
@@ -236,10 +241,10 @@ public class CadastroAnimais extends javax.swing.JFrame {
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
-        jButton2.setText("Alterar");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        btnAlterar.setText("Alterar");
+        btnAlterar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                btnAlterarActionPerformed(evt);
             }
         });
 
@@ -277,7 +282,7 @@ public class CadastroAnimais extends javax.swing.JFrame {
                                 .addGap(20, 20, 20)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jButton3)
-                                    .addComponent(jButton2))))
+                                    .addComponent(btnAlterar))))
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -295,7 +300,7 @@ public class CadastroAnimais extends javax.swing.JFrame {
                         .addGap(48, 48, 48)
                         .addComponent(jButton6)
                         .addGap(35, 35, 35)
-                        .addComponent(jButton2)
+                        .addComponent(btnAlterar)
                         .addGap(30, 30, 30)
                         .addComponent(jButton3))
                     .addComponent(t, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -325,9 +330,27 @@ public class CadastroAnimais extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_txtRacaActionPerformed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton2ActionPerformed
+    private void btnAlterarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAlterarActionPerformed
+        //Resgato as informações da linha para passar a tela de Cadastro/Alteração
+        if (tblAnimal.getRowCount() > 0) {
+            //Resgato o número da linha pelo JTable
+            int numeroLinha = tblAnimal.getSelectedRow();
+
+            String cpf = tblAnimal.getModel().getValueAt(numeroLinha, 0).toString();
+            String nome = tblAnimal.getModel().getValueAt(numeroLinha, 1).toString();
+            String dataNascimento = tblAnimal.getModel().getValueAt(numeroLinha, 2).toString();
+            String telefone = tblAnimal.getModel().getValueAt(numeroLinha, 3).toString();
+            String endereco = tblAnimal.getModel().getValueAt(numeroLinha, 4).toString();
+            /* txtCpfCli.setText(cpf);
+            txtNomeCliente.setText(nome);
+            jDateChooser1.setDateFormatString(dataNascimento);
+            txtTelefoneCliente.setText(telefone);
+            txtEnderecoCliente.setText(endereco);
+            modoTela = "Alteração";*/
+        } else {
+            JOptionPane.showMessageDialog(this, "Selecione um cliente da tabela!");
+        }
+    }//GEN-LAST:event_btnAlterarActionPerformed
 
     private void caixaAnimalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_caixaAnimalActionPerformed
         // TODO add your handling code here:
@@ -345,9 +368,11 @@ public class CadastroAnimais extends javax.swing.JFrame {
 
             if (animal instanceof Mamifero) {
                 animal = new Mamifero(nome, peso, idade, tipo, raca, qtdAlimento);
+                caixaAnimal.setSelectedIndex(0);
             } else {
                 int cod_liberacao = Integer.parseInt(txtCodLiberacao.getText());
                 animal = new Ave(cod_liberacao, idade, nome, peso, idade, tipo, raca, qtdAlimento);
+                caixaAnimal.setSelectedIndex(1);
             }
             boolean retorno = controller.cadastrar(animal);
 
@@ -376,7 +401,6 @@ public class CadastroAnimais extends javax.swing.JFrame {
             } catch (Exception e) {
                 JOptionPane.showMessageDialog(this, "Falha ao gravar no banco de dados\n" + e.getMessage(),
                         "Aviso de Falha", JOptionPane.ERROR_MESSAGE);
-
             }
         }
 
@@ -386,6 +410,7 @@ public class CadastroAnimais extends javax.swing.JFrame {
         txtIdade.setText(null);
         txtPeso.setText(null);
         txtQtdAlimento.setText(null);
+        txtCodLiberacao.setText(null);
         modoTela = "Criação";
     }//GEN-LAST:event_btnSalvarActionPerformed
 
@@ -409,6 +434,10 @@ public class CadastroAnimais extends javax.swing.JFrame {
         ControleAnimais c = new ControleAnimais();
         c.setVisible(true);
     }//GEN-LAST:event_jButton6ActionPerformed
+
+    private void caixaAnimalItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_caixaAnimalItemStateChanged
+        CarregaTabela();
+    }//GEN-LAST:event_caixaAnimalItemStateChanged
     private void CarregaTabela() {
 
         ArrayList<Animal> listaAnimal;
@@ -416,14 +445,30 @@ public class CadastroAnimais extends javax.swing.JFrame {
 
         DefaultTableModel modelo = (DefaultTableModel) tblAnimal.getModel();
         modelo.setRowCount(0);
+
         for (Animal animal : listaAnimal) {
-            modelo.addRow(new Object[]{
-                animal.getTipo(),
-                animal.getNome(),
-                animal.getRaca(),
-                animal.getIdade(),
-                animal.getPeso(),
-                animal.getAlimento()});
+            if (animal instanceof Ave) {
+                tblAnimal.getColumnModel().getColumn(6).setMinWidth(100);
+                tblAnimal.getColumnModel().getColumn(6).setMaxWidth(100);
+                modelo.addRow(new Object[]{
+                    animal.getTipo(),
+                    animal.getNome(),
+                    animal.getRaca(),
+                    animal.getIdade(),
+                    animal.getPeso(),
+                    animal.getAlimento(),
+                    ((Ave) animal).getCod_liberacao()});
+            } else {
+                tblAnimal.getColumnModel().getColumn(6).setMinWidth(0);
+                tblAnimal.getColumnModel().getColumn(6).setMaxWidth(0);
+                modelo.addRow(new Object[]{
+                    animal.getTipo(),
+                    animal.getNome(),
+                    animal.getRaca(),
+                    animal.getIdade(),
+                    animal.getPeso(),
+                    animal.getAlimento()});
+            }
         }
     }
 
@@ -470,10 +515,10 @@ public class CadastroAnimais extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox<String> boxAnimalCadastrar;
+    private javax.swing.JButton btnAlterar;
     private javax.swing.JButton btnSalvar;
     private javax.swing.JComboBox<String> caixaAnimal;
     private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
