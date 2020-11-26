@@ -1,6 +1,6 @@
 package model;
 
-import interfaces.AcoesAnimais;
+import interfaces.Cadastravel;
 
 public class Animal {
     

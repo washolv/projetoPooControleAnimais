@@ -7,18 +7,18 @@ package controller;
 
 import dao.AnimalDAO;
 import static dao.AnimalDAO.listarAnimal;
-import interfaces.AcoesAnimais;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import model.Animal;
+import interfaces.Cadastravel;
 
 /**
  *
  * @author User
  */
-public class AnimalController implements AcoesAnimais {
+public class AnimalController implements Cadastravel {
 
     @Override
     public boolean cadastrar(Animal animal) {

@@ -65,7 +65,7 @@ public class ControleAnimais extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Data", "Comeu Alimento", "Quantidade de Alimento", "Bebeu Água", "Passeou", "Banho"
+                "id", "Data", "Comeu Alimento", "Quantidade de Alimento", "Bebeu Água", "Passeou", "Banho"
             }
         ));
         jScrollPane1.setViewportView(jTable1);
@@ -152,7 +152,7 @@ public class ControleAnimais extends javax.swing.JFrame {
 
         jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Sim", "Não" }));
 
-        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Sim", "Não", " " }));
+        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Sim", "Não" }));
 
         jComboBox3.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Sim", "Não" }));
 
