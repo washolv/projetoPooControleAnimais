@@ -196,7 +196,7 @@ public class CadastroAnimais extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Tipo", "Nome", "Raça", "Idade", "Peso", "Quantidade Alimento", "Cód. Liberação"
+                "id", "Tipo", "Nome", "Raça", "Idade", "Peso", "Quantidade Alimento", "Cód. Liberação"
             }
         ));
         tblAnimal.setToolTipText("");
@@ -251,6 +251,11 @@ public class CadastroAnimais extends javax.swing.JFrame {
         });
 
         jButton3.setText("Excluir");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
 
         btnSalvar.setText("Salvar");
         btnSalvar.addActionListener(new java.awt.event.ActionListener() {
@@ -338,20 +343,24 @@ public class CadastroAnimais extends javax.swing.JFrame {
             //Resgato o número da linha pelo JTable
             int numeroLinha = tblAnimal.getSelectedRow();
 
-            String cpf = tblAnimal.getModel().getValueAt(numeroLinha, 0).toString();
-            String nome = tblAnimal.getModel().getValueAt(numeroLinha, 1).toString();
-            String dataNascimento = tblAnimal.getModel().getValueAt(numeroLinha, 2).toString();
-            String telefone = tblAnimal.getModel().getValueAt(numeroLinha, 3).toString();
-            String endereco = tblAnimal.getModel().getValueAt(numeroLinha, 4).toString();
-            /* txtCpfCli.setText(cpf);
-            txtNomeCliente.setText(nome);
-            jDateChooser1.setDateFormatString(dataNascimento);
-            txtTelefoneCliente.setText(telefone);
-            txtEnderecoCliente.setText(endereco);
-            modoTela = "Alteração";*/
+            txtTipo.setText(tblAnimal.getModel().getValueAt(numeroLinha, 1).toString());
+            txtNome.setText(tblAnimal.getModel().getValueAt(numeroLinha, 2).toString());
+            txtRaca.setText(tblAnimal.getModel().getValueAt(numeroLinha, 3).toString());
+            txtIdade.setText(tblAnimal.getModel().getValueAt(numeroLinha, 4).toString());
+            txtPeso.setText(tblAnimal.getModel().getValueAt(numeroLinha, 5).toString());
+            txtQtdAlimento.setText(tblAnimal.getModel().getValueAt(numeroLinha, 6).toString());
+            if (((String) caixaAnimal.getSelectedItem()).equals("Aves")) {
+                boxAnimalCadastrar.setSelectedIndex(1);
+                txtCodLiberacao.setText(tblAnimal.getModel().getValueAt(numeroLinha, 7).toString());
+            } else {
+                boxAnimalCadastrar.setSelectedIndex(0);
+                lblCodLiberacao.setVisible(false);
+                txtCodLiberacao.setVisible(false);
+            }
         } else {
-            JOptionPane.showMessageDialog(this, "Selecione um cliente da tabela!");
+            JOptionPane.showMessageDialog(this, "Selecione um animal da tabela!");
         }
+        modoTela = "Alteração";
     }//GEN-LAST:event_btnAlterarActionPerformed
 
     private void caixaAnimalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_caixaAnimalActionPerformed
@@ -359,8 +368,8 @@ public class CadastroAnimais extends javax.swing.JFrame {
     }//GEN-LAST:event_caixaAnimalActionPerformed
 
     private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
-        if (modoTela == "Criação") {
 
+        if (modoTela == "Criação") {
             String tipo = (txtTipo.getText());
             String nome = (txtNome.getText());
             String raca = (txtRaca.getText());
@@ -385,6 +394,8 @@ public class CadastroAnimais extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(null, "Falha ao cadastrar animal!", "Falha", JOptionPane.ERROR_MESSAGE);
             }
         } else {
+            int numeroLinha = tblAnimal.getSelectedRow();
+            int id = Integer.parseInt(tblAnimal.getModel().getValueAt(numeroLinha, 0).toString());
             String tipo = (txtTipo.getText());
             String nome = (txtNome.getText());
             String raca = (txtRaca.getText());
@@ -392,7 +403,12 @@ public class CadastroAnimais extends javax.swing.JFrame {
             float peso = Float.parseFloat(txtPeso.getText());
             float qtdAlimento = Float.parseFloat(txtQtdAlimento.getText());
 
-            Animal animal = new Mamifero(nome, peso, idade, tipo, raca, qtdAlimento);
+            if (((String) boxAnimalCadastrar.getSelectedItem()).equals("Mamifero")) {
+                animal = new Mamifero(id, nome, peso, idade, tipo, raca, qtdAlimento);
+            } else {
+                int cod_liberacao = Integer.parseInt(txtCodLiberacao.getText());
+                animal = new Ave(cod_liberacao, id, nome, peso, idade, tipo, raca, qtdAlimento);
+            }
 
             try {
                 boolean retorno = controller.alterar(animal);
@@ -404,6 +420,7 @@ public class CadastroAnimais extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(this, "Falha ao gravar no banco de dados\n" + e.getMessage(),
                         "Aviso de Falha", JOptionPane.ERROR_MESSAGE);
             }
+            modoTela = "Criação";
         }
 
         txtTipo.setText(null);
@@ -440,6 +457,26 @@ public class CadastroAnimais extends javax.swing.JFrame {
     private void caixaAnimalItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_caixaAnimalItemStateChanged
         CarregaTabela();
     }//GEN-LAST:event_caixaAnimalItemStateChanged
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        if (tblAnimal.getRowCount() > 0) {
+            int numeroLinha = tblAnimal.getSelectedRow();
+            String idd = tblAnimal.getModel().getValueAt(numeroLinha, 0).toString();
+            int id = Integer.parseInt(idd);
+            String animal = (String) caixaAnimal.getSelectedItem();
+            boolean retorno = controller.excluir(animal, id);
+
+            if (retorno == true) {
+                JOptionPane.showMessageDialog(null, "Animal excluido com Sucesso", "Exclusão realizada", JOptionPane.INFORMATION_MESSAGE);
+                CarregaTabela();
+            } else {
+                JOptionPane.showMessageDialog(null, "Falha ao excluir animal!", "Falha", JOptionPane.ERROR_MESSAGE);
+            }
+
+        } else {
+            JOptionPane.showMessageDialog(this, "Selecione um animal da tabela para excluir!");
+        }
+    }//GEN-LAST:event_jButton3ActionPerformed
     private void CarregaTabela() {
 
         ArrayList<Animal> listaAnimal;
@@ -450,9 +487,12 @@ public class CadastroAnimais extends javax.swing.JFrame {
 
         for (Animal animal : listaAnimal) {
             if (animal instanceof Ave) {
-                tblAnimal.getColumnModel().getColumn(6).setMinWidth(100);
-                tblAnimal.getColumnModel().getColumn(6).setMaxWidth(100);
+                tblAnimal.getColumnModel().getColumn(0).setMinWidth(0);
+                tblAnimal.getColumnModel().getColumn(0).setMaxWidth(0);
+                tblAnimal.getColumnModel().getColumn(7).setMinWidth(100);
+                tblAnimal.getColumnModel().getColumn(7).setMaxWidth(100);
                 modelo.addRow(new Object[]{
+                    animal.getId(),
                     animal.getTipo(),
                     animal.getNome(),
                     animal.getRaca(),
@@ -461,9 +501,12 @@ public class CadastroAnimais extends javax.swing.JFrame {
                     animal.getAlimento(),
                     ((Ave) animal).getCod_liberacao()});
             } else {
-                tblAnimal.getColumnModel().getColumn(6).setMinWidth(0);
-                tblAnimal.getColumnModel().getColumn(6).setMaxWidth(0);
+                tblAnimal.getColumnModel().getColumn(0).setMinWidth(0);
+                tblAnimal.getColumnModel().getColumn(0).setMaxWidth(0);
+                tblAnimal.getColumnModel().getColumn(7).setMinWidth(0);
+                tblAnimal.getColumnModel().getColumn(7).setMaxWidth(0);
                 modelo.addRow(new Object[]{
+                    animal.getId(),
                     animal.getTipo(),
                     animal.getNome(),
                     animal.getRaca(),

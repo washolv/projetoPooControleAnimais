@@ -18,12 +18,11 @@ import model.Animal;
  *
  * @author User
  */
-public class AnimalController implements AcoesAnimais{
+public class AnimalController implements AcoesAnimais {
 
     @Override
     public boolean cadastrar(Animal animal) {
-    
-        
+
         //grava a informação no banco de dados
         boolean retorno = false;
         try {
@@ -31,32 +30,32 @@ public class AnimalController implements AcoesAnimais{
         } catch (SQLException ex) {
             Logger.getLogger(AnimalController.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
         return retorno;
-       
+
     }
 
     @Override
     public boolean alterar(Animal animal) {
-        return true;
+        boolean retorno=AnimalDAO.editarAnimal(animal);
+        return retorno;
     }
 
     @Override
-  public ArrayList<Animal> pesquisar(String pesquisa) {
+    public ArrayList<Animal> pesquisar(String pesquisa) {
         ArrayList<Animal> animais = AnimalDAO.listarAnimal(pesquisa);
 
         return animais;
     }
 
     @Override
-    public boolean excluir(int id) {
-        return true;
+    public boolean excluir(String animal, int id) {
+        boolean retorno = AnimalDAO.excluirAnimal(animal, id);
+        return retorno;
     }
-    
-    public static void teste(){
-        
+
+    public static void teste() {
+
     }
-    
-    
-    
+
 }

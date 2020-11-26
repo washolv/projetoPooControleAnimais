@@ -11,6 +11,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import model.Animal;
 import model.Ave;
 import model.Mamifero;
@@ -36,12 +38,12 @@ public class AnimalDAO {
                         + "VALUES(?, ?, ?, ?, ?,?)");
 
                 //Adicionando parâmetros ao comando SQL
-                addSQL.setString(1, animal.getRaca());
-                addSQL.setInt(2, animal.getIdade());
-                addSQL.setString(3, animal.getNome());
-                addSQL.setFloat(4, animal.getPeso());
-                addSQL.setFloat(5, animal.getAlimento());
-                addSQL.setString(6, animal.getTipo());
+                addSQL.setString(1, animal.getTipo());
+                addSQL.setString(2, animal.getRaca());
+                addSQL.setInt(3, animal.getIdade());
+                addSQL.setString(4, animal.getNome());
+                addSQL.setFloat(5, animal.getPeso());
+                addSQL.setFloat(6, animal.getAlimento());
 
                 //Executando a instrução SQL
                 int linhasAfetadas = addSQL.executeUpdate();
@@ -88,13 +90,13 @@ public class AnimalDAO {
         return false;
     }
 
-    public static boolean editarAnimal(Animal animal) throws SQLException {
+    public static boolean editarAnimal(Animal animal)  {
         boolean retorno = false;
         PreparedStatement addSQL = null;
         conexao = ConexaoMySql.getConexaoMySQL();
         try {
             if (animal instanceof Mamifero) {
-                addSQL = conexao.prepareStatement("UPDATE Mamifero SET raca = ?, idade=?, nome=?, peso=?, aliemnto=?, tipo=?  WHERE id = ?");
+                addSQL = conexao.prepareStatement("UPDATE Mamifero SET raca = ?, idade=?, nome=?, peso=?, alimento=?, tipo=?  WHERE id = ?");
 
                 //Adicionando parâmetros ao comando SQL
                 addSQL.setString(1, animal.getRaca());
@@ -144,7 +146,11 @@ public class AnimalDAO {
             retorno = false;
         } finally {
             if (addSQL != null) {
-                addSQL.close();
+                try {
+                    addSQL.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(AnimalDAO.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         }
         return false;
@@ -162,7 +168,7 @@ public class AnimalDAO {
                 rs = addSQL.executeQuery();
                 Ave ave;
                 while (rs.next()) {
-                    Animal animal = new Animal(rs.getString("nome"), rs.getFloat("peso"), rs.getInt("idade"), rs.getString("tipo"), rs.getString("raca"), rs.getFloat("alimento"));
+                    Animal animal = new Animal(rs.getInt("id"), rs.getString("nome"), rs.getFloat("peso"), rs.getInt("idade"), rs.getString("tipo"), rs.getString("raca"), rs.getFloat("alimento"));
                     animais.add(animal);
                 }
             } else {
@@ -170,7 +176,7 @@ public class AnimalDAO {
                 rs = addSQL.executeQuery();
                 Ave ave;
                 while (rs.next()) {
-                    Animal animal = new Ave(rs.getInt("cod_liberacao"),rs.getInt("id"),rs.getString("nome"), rs.getFloat("peso"), rs.getInt("idade"), rs.getString("tipo"), rs.getString("raca"), rs.getFloat("alimento"));
+                    Animal animal = new Ave(rs.getInt("cod_liberacao"), rs.getInt("id"), rs.getString("nome"), rs.getFloat("peso"), rs.getInt("idade"), rs.getString("tipo"), rs.getString("raca"), rs.getFloat("alimento"));
                     animais.add(animal);
                 }
             }
@@ -182,15 +188,48 @@ public class AnimalDAO {
         return animais;
     }
 
-    public static void excluirAnimal(int id) {
+    public static boolean excluirAnimal(String animal, int id) {
+        boolean retorno = false;
+        int linhasAfetadas = 0;
+        PreparedStatement addSQL = null;
         try {
             conexao = ConexaoMySql.getConexaoMySQL();
+            if (animal.equals("Mamifero")) {
+
+                addSQL = conexao.prepareStatement("DELETE FROM Mamifero WHERE id = ?");
+                addSQL.setInt(1, id);
+
+                linhasAfetadas = addSQL.executeUpdate();
+            } else {
+                addSQL = conexao.prepareStatement("DELETE FROM Ave WHERE id = ?");
+                addSQL.setInt(1, id);
+
+                linhasAfetadas = addSQL.executeUpdate();
+            }
+            if (linhasAfetadas > 0) {
+                retorno = true;
+            } else {
+                retorno = false;
+
+            }
         } catch (Exception e) {
             System.err.println(e.getMessage());
 
+            retorno = false;
+        } finally {
+
+            try {
+                if (addSQL != null) {
+                    addSQL.close();
+                }
+
+                conexao.close();
+
+            } catch (SQLException ex) {
+            }
         }
 
-        PreparedStatement addSQL = null;
+        return retorno;
 
     }
 

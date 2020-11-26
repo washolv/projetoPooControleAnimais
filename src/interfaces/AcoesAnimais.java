@@ -19,6 +19,6 @@ public interface AcoesAnimais {
           public abstract boolean cadastrar(Animal animal);
           public abstract boolean alterar(Animal animal);
           public abstract ArrayList<Animal> pesquisar(String pesquisar);
-          public abstract boolean excluir(int id);
+          public abstract boolean excluir(String animal, int id);
     
 }

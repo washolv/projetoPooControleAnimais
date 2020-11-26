@@ -17,6 +17,10 @@ public class Mamifero extends Animal {
     public Mamifero() {
     }
 
+    public Mamifero(int id, String nome, float peso, int idade, String tipo, String raca, float alimento) {
+        super(id, nome, peso, idade, tipo, raca, alimento);
+    }
+
     public Mamifero(String nome, float peso, int idade, String tipo, String raca, float alimento) {
         super(nome, peso, idade, tipo, raca, alimento);
     }
