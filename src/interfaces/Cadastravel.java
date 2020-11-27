@@ -14,12 +14,12 @@ import model.Animal;
  */
 public interface Cadastravel {
 
-    public abstract boolean cadastrar(Animal animal);
+    public abstract boolean cadastrar(Object animal);
 
-    public abstract boolean alterar(Animal animal);
+    public abstract boolean alterar(Object animal);
 
-    public abstract ArrayList<Animal> pesquisar(String pesquisar);
+    public abstract ArrayList<Object> pesquisar(String pesquisar);
 
-    public abstract boolean excluir(String animal, int id);
+    public abstract boolean excluir(String tabela, int id);
 
 }

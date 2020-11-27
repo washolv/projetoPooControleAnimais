@@ -27,7 +27,8 @@ public class AnimalDAO {
     PreparedStatement addSQL = null;
     private static Connection conexao;
 
-    public static boolean inserirNovoAnimal(Animal animal) throws SQLException {
+    public static boolean inserirNovoAnimal(Object ani) throws SQLException {
+        Animal animal = (Animal) ani;
         boolean retorno = false;
         PreparedStatement addSQL = null;
         conexao = ConexaoMySql.getConexaoMySQL();
@@ -90,7 +91,8 @@ public class AnimalDAO {
         return false;
     }
 
-    public static boolean editarAnimal(Animal animal)  {
+    public static boolean editarAnimal(Object ani) {
+        Animal animal = (Animal) ani;
         boolean retorno = false;
         PreparedStatement addSQL = null;
         conexao = ConexaoMySql.getConexaoMySQL();
@@ -156,8 +158,8 @@ public class AnimalDAO {
         return false;
     }
 
-    public static ArrayList<Animal> listarAnimal(String tipo) {
-        ArrayList<Animal> animais = new ArrayList<Animal>();
+    public static ArrayList<Object> listarAnimal(String tipo) {
+        ArrayList<Object> animais = new ArrayList<Object>();
         PreparedStatement addSQL = null;
         conexao = ConexaoMySql.getConexaoMySQL();
         ResultSet rs = null;

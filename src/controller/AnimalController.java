@@ -21,8 +21,7 @@ import interfaces.Cadastravel;
 public class AnimalController implements Cadastravel {
 
     @Override
-    public boolean cadastrar(Animal animal) {
-
+    public boolean cadastrar(Object animal) {        
         //grava a informação no banco de dados
         boolean retorno = false;
         try {
@@ -36,14 +35,14 @@ public class AnimalController implements Cadastravel {
     }
 
     @Override
-    public boolean alterar(Animal animal) {
+    public boolean alterar(Object animal) {
         boolean retorno=AnimalDAO.editarAnimal(animal);
         return retorno;
     }
 
     @Override
-    public ArrayList<Animal> pesquisar(String pesquisa) {
-        ArrayList<Animal> animais = AnimalDAO.listarAnimal(pesquisa);
+    public ArrayList<Object> pesquisar(String pesquisa) {
+        ArrayList<Object> animais = AnimalDAO.listarAnimal(pesquisa);
 
         return animais;
     }

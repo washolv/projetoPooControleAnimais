@@ -479,40 +479,41 @@ public class CadastroAnimais extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton3ActionPerformed
     private void CarregaTabela() {
 
-        ArrayList<Animal> listaAnimal;
+        ArrayList<Object> listaAnimal;
         listaAnimal = controller.pesquisar((String) caixaAnimal.getSelectedItem());
 
         DefaultTableModel modelo = (DefaultTableModel) tblAnimal.getModel();
         modelo.setRowCount(0);
 
-        for (Animal animal : listaAnimal) {
+        for (Object animal : listaAnimal) {
+            Animal ani = (Animal) animal;
             if (animal instanceof Ave) {
                 tblAnimal.getColumnModel().getColumn(0).setMinWidth(0);
                 tblAnimal.getColumnModel().getColumn(0).setMaxWidth(0);
                 tblAnimal.getColumnModel().getColumn(7).setMinWidth(100);
                 tblAnimal.getColumnModel().getColumn(7).setMaxWidth(100);
                 modelo.addRow(new Object[]{
-                    animal.getId(),
-                    animal.getTipo(),
-                    animal.getNome(),
-                    animal.getRaca(),
-                    animal.getIdade(),
-                    animal.getPeso(),
-                    animal.getAlimento(),
-                    ((Ave) animal).getCod_liberacao()});
+                    ani.getId(),
+                    ani.getTipo(),
+                    ani.getNome(),
+                    ani.getRaca(),
+                    ani.getIdade(),
+                    ani.getPeso(),
+                    ani.getAlimento(),
+                    ((Ave) ani).getCod_liberacao()});
             } else {
                 tblAnimal.getColumnModel().getColumn(0).setMinWidth(0);
                 tblAnimal.getColumnModel().getColumn(0).setMaxWidth(0);
                 tblAnimal.getColumnModel().getColumn(7).setMinWidth(0);
                 tblAnimal.getColumnModel().getColumn(7).setMaxWidth(0);
                 modelo.addRow(new Object[]{
-                    animal.getId(),
-                    animal.getTipo(),
-                    animal.getNome(),
-                    animal.getRaca(),
-                    animal.getIdade(),
-                    animal.getPeso(),
-                    animal.getAlimento()});
+                    ani.getId(),
+                    ani.getTipo(),
+                    ani.getNome(),
+                    ani.getRaca(),
+                    ani.getIdade(),
+                    ani.getPeso(),
+                    ani.getAlimento()});
             }
         }
     }
