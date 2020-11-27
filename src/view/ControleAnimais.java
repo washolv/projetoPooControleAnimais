@@ -7,6 +7,7 @@ package view;
 
 import controller.AcoesDiariasController;
 import javax.swing.JComboBox;
+import javax.swing.JOptionPane;
 import model.AcoesAve;
 import model.AcoesDiarias;
 import model.AcoesMamifero;
@@ -24,7 +25,6 @@ public class ControleAnimais extends javax.swing.JFrame {
         btnBuscar.setVisible(false);
         btnBuscarInferior.setEnabled(false);
     }
-
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -262,7 +262,7 @@ public class ControleAnimais extends javax.swing.JFrame {
                     .addComponent(comboBebeuAgua, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(comboPasseou, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(dataAcao, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(177, Short.MAX_VALUE))
+                .addContainerGap(168, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -315,7 +315,6 @@ public class ControleAnimais extends javax.swing.JFrame {
         btnExcluir.setEnabled(false);
 
         btnSalvar.setText("Salvar");
-        btnSalvar.setEnabled(false);
         btnSalvar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnSalvarActionPerformed(evt);
@@ -415,7 +414,12 @@ public class ControleAnimais extends javax.swing.JFrame {
         } else {
             acao = acaoAve();
         }
-        boolean retorno = controller.cadastrar(acao);
+        if (controller.cadastrar(acao)) {
+            JOptionPane.showMessageDialog(this, "Ação Cadastrada!");
+            setarCamposNulos();
+        } else {
+            JOptionPane.showMessageDialog(this, "Houve um erro ao Cadastrar a Ação!");
+        }
     }//GEN-LAST:event_btnSalvarActionPerformed
 
     private void comboAnimalItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_comboAnimalItemStateChanged
@@ -454,6 +458,7 @@ public class ControleAnimais extends javax.swing.JFrame {
         comboBanho.setEnabled(false);
         txtQtdAlimento.setEditable(false);
         txtNomeAnimal.setText(null);
+        dataAcao.setDate(null);
         txtNomeAnimal.setText(null);
         txtNumeroCadastro.setText(null);
     }

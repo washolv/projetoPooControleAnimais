@@ -35,7 +35,7 @@ public class AnimalDAO {
         PreparedStatement instrucaoSQL = null;
         try {
             if (animal instanceof Mamifero) {
-                addSQL = conexao.prepareStatement("INSERT INTO Mamifero (raca, idade, nome, peso, alimento, tipo)"
+                addSQL = conexao.prepareStatement("INSERT INTO Mamifero (tipo, raca, idade, nome, peso, qtdAlimento)"
                         + "VALUES(?, ?, ?, ?, ?,?)");
 
                 //Adicionando parâmetros ao comando SQL
@@ -58,7 +58,7 @@ public class AnimalDAO {
 
             } else {
                 Ave ave = (Ave) animal;
-                addSQL = conexao.prepareStatement("INSERT INTO Ave (raca, idade, nome, peso, alimento, tipo, cod_liberacao)"
+                addSQL = conexao.prepareStatement("INSERT INTO Ave (raca, idade, nome, peso, qtdAlimento, tipo, cod_liberacao)"
                         + "VALUES(?, ?, ?, ?, ?,?,?)");
 
                 //Adicionando parâmetros ao comando SQL
@@ -98,7 +98,7 @@ public class AnimalDAO {
         conexao = ConexaoMySql.getConexaoMySQL();
         try {
             if (animal instanceof Mamifero) {
-                addSQL = conexao.prepareStatement("UPDATE Mamifero SET raca = ?, idade=?, nome=?, peso=?, alimento=?, tipo=?  WHERE id = ?");
+                addSQL = conexao.prepareStatement("UPDATE Mamifero SET raca = ?, idade=?, nome=?, peso=?, qtdAlimento=?, tipo=?  WHERE id = ?");
 
                 //Adicionando parâmetros ao comando SQL
                 addSQL.setString(1, animal.getRaca());
@@ -121,7 +121,7 @@ public class AnimalDAO {
 
             } else {
                 Ave ave = (Ave) animal;
-                addSQL = conexao.prepareStatement("UPDATE Ave SET raca=? , idade=? , nome =?, peso=? , alimento=?, tipo=?, cod_liberacao=? WHERE id = ?");
+                addSQL = conexao.prepareStatement("UPDATE Ave SET raca=? , idade=? , nome =?, peso=? , qtdAlimento=?, tipo=?, cod_liberacao=? WHERE id = ?");
 
                 //Adicionando parâmetros ao comando SQL
                 addSQL.setString(1, ave.getRaca());
@@ -170,7 +170,7 @@ public class AnimalDAO {
                 rs = addSQL.executeQuery();
                 Ave ave;
                 while (rs.next()) {
-                    Animal animal = new Animal(rs.getInt("id"), rs.getString("nome"), rs.getFloat("peso"), rs.getInt("idade"), rs.getString("tipo"), rs.getString("raca"), rs.getFloat("alimento"));
+                    Animal animal = new Animal(rs.getInt("id"), rs.getString("nome"), rs.getFloat("peso"), rs.getInt("idade"), rs.getString("tipo"), rs.getString("raca"), rs.getFloat("qtdAlimento"));
                     animais.add(animal);
                 }
             } else {
@@ -178,7 +178,7 @@ public class AnimalDAO {
                 rs = addSQL.executeQuery();
                 Ave ave;
                 while (rs.next()) {
-                    Animal animal = new Ave(rs.getInt("cod_liberacao"), rs.getInt("id"), rs.getString("nome"), rs.getFloat("peso"), rs.getInt("idade"), rs.getString("tipo"), rs.getString("raca"), rs.getFloat("alimento"));
+                    Animal animal = new Ave(rs.getInt("cod_liberacao"), rs.getInt("id"), rs.getString("nome"), rs.getFloat("peso"), rs.getInt("idade"), rs.getString("tipo"), rs.getString("raca"), rs.getFloat("qtdAlimento"));
                     animais.add(animal);
                 }
             }

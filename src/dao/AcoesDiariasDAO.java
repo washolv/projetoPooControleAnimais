@@ -75,16 +75,15 @@ public class AcoesDiariasDAO {
                 AcoesAve ac = (AcoesAve) acao;
                 String formatted = format1.format(ac.getData());
 
-                addSQL = conexao.prepareStatement("INSERT INTO AcoesAve  (beberAgua , dataAcao , comerAlimento , qtdAlimento , alimento, idAve)"
-                        + "VALUES(?, ?, ?, ?, ?,?)");
+                addSQL = conexao.prepareStatement("INSERT INTO AcoesAve  (beberAgua , dataAcao , comerAlimento , qtdAlimento , idAve)"
+                        + "VALUES(?, ?, ?, ?, ?)");
 
                 //Adicionando parâmetros ao comando SQL
                 addSQL.setString(1, trueOrFalse(ac.isBeberAgua()));
                 addSQL.setString(2, formatted);
                 addSQL.setString(3, trueOrFalse(ac.isComerAlimento()));
                 addSQL.setFloat(4, ac.getQtdAlimento());
-                addSQL.setString(5, trueOrFalse(ac.isComerAlimento()));
-                addSQL.setFloat(6, ac.getIdAnimal());
+                addSQL.setFloat(5, ac.getIdAnimal());
                 //Executando a instrução SQL
                 int linhasAfetadas = addSQL.executeUpdate();
 
