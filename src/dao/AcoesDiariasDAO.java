@@ -29,13 +29,48 @@ public class AcoesDiariasDAO {
 
     private static Connection conexao;
 
-    public static ArrayList<Object> listarAcoes() {
+    public static ArrayList<Object> listarAcoes(String tipo, int id) {
         PreparedStatement addSQL = null;
         conexao = ConexaoMySql.getConexaoMySQL();
+        ResultSet rs = null;
+        ArrayList<Object> listarAcoes=new ArrayList<Object>();
         PreparedStatement instrucaoSQL = null;
+        try {
+            conexao = ConexaoMySql.getConexaoMySQL();
+            if (tipo.equals("Mamifero")) {
+                addSQL = conexao.prepareStatement("Select * from AcoesMamifero WHERE id=?");
+                addSQL.setInt(1, id);
+                rs = addSQL.executeQuery();
+                Ave ave;
+                while (rs.next()) {                 
+                    AcoesDiarias acao = new AcoesMamifero(StringToBoolean(rs.getString("passear")),
+                                                            StringToBoolean(rs.getString("banho")),
+                                                            rs.getInt("id"),
+                                                            rs.getDate("dataAcao"),
+                                                            StringToBoolean(rs.getString("comerAlimento")),
+                                                            StringToBoolean(rs.getString("beberAgua")),
+                                                            rs.getFloat("qtdAlimento"));
+                    listarAcoes.add(acao);
+                }
+            } else {
+                addSQL = conexao.prepareStatement("Select * from AcoesAve WHERE id=?");
+                addSQL.setInt(1, id);
+                rs = addSQL.executeQuery();
+                Ave ave;
+               while (rs.next()) {                 
+                    AcoesDiarias acao = new AcoesAve(rs.getInt("id"),
+                                                     rs.getDate("dataAcao"),
+                                                     StringToBoolean(rs.getString("comerAlimento")),
+                                                     StringToBoolean(rs.getString("beberAgua")),
+                                                     rs.getFloat("qtdAlimento"));
+                    listarAcoes.add(acao);
+                }
+            }
 
-        ArrayList<Object> listaAcoes = new ArrayList<Object>();
-        return listaAcoes;
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+        }
+        return listarAcoes;
     }
 
     public static boolean CadastrarAcao(Object acao) {
@@ -175,5 +210,9 @@ public class AcoesDiariasDAO {
         } else {
             return "nao";
         }
+    }
+
+    public static boolean StringToBoolean(String condicao) {
+        return condicao.equals("sim");
     }
 }

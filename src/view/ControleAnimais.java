@@ -445,6 +445,7 @@ public class ControleAnimais extends javax.swing.JFrame {
             setarCamposEditaveis();
             txtNomeAnimal.setText(nome);
         } else {
+            JOptionPane.showMessageDialog(this, "Animal não encontrado");
             setarCamposNulos();
         }
     }
@@ -461,6 +462,7 @@ public class ControleAnimais extends javax.swing.JFrame {
         dataAcao.setDate(null);
         txtNomeAnimal.setText(null);
         txtNumeroCadastro.setText(null);
+        txtQtdAlimento.setText(null);
     }
 
     public void setarCamposEditaveis() {

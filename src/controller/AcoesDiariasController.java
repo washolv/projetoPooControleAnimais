@@ -29,8 +29,8 @@ public class AcoesDiariasController implements Cadastravel{
     }
 
     @Override
-    public ArrayList<Object> pesquisar(String pesquisar) {
-        ArrayList<Object> listaAcoes=AcoesDiariasDAO.listarAcoes();
+    public ArrayList<Object> pesquisar(String pesquisar, int id) {
+        ArrayList<Object> listaAcoes=AcoesDiariasDAO.listarAcoes(pesquisar, id);
         return listaAcoes;
     }
 
