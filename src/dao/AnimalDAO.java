@@ -235,58 +235,5 @@ public class AnimalDAO {
 
     }
 
-    public static String buscar(String tabela, int id) {
-        String retorno = null;
-        ResultSet rs = null;
-        Animal animal = new Animal();
-        PreparedStatement addSQL = null;
-        conexao = ConexaoMySql.getConexaoMySQL();
-
-        try {
-
-            if (tabela.equals("Mamifero")) {
-
-                addSQL = conexao.prepareStatement("Select * FROM Mamifero WHERE id = ?");
-                addSQL.setInt(1, id);
-
-                rs = addSQL.executeQuery();
-            } else {
-                addSQL = conexao.prepareStatement("Select * FROM Ave WHERE id = ?");
-                addSQL.setInt(1, id);
-
-                rs = addSQL.executeQuery();
-            }           
-            if(rs.next()){
-                retorno=rs.getString("nome");
-            }
-        } catch (Exception e) {
-            System.err.println(e.getMessage());
-
-            retorno = null;
-        } finally {
-
-            if (addSQL != null) {
-                try {
-                    addSQL.close();
-                } catch (SQLException ex) {
-                    Logger.getLogger(AnimalDAO.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-        }
-
-        return retorno;
-
-    }
-
-    public static void inserirNovaAcaoAnimal() {
-        try {
-            conexao = ConexaoMySql.getConexaoMySQL();
-        } catch (Exception e) {
-            System.err.println(e.getMessage());
-        }
-
-        PreparedStatement addSQL = null;
-
-    }
 
 }

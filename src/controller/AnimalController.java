@@ -53,9 +53,5 @@ public class AnimalController implements Cadastravel {
         return retorno;
     }
 
-    public static String buscar(String tabela, int id) {
-        String retorno = AnimalDAO.buscar(tabela, id);
-        return retorno;
-    }
 
 }

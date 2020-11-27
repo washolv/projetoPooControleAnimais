@@ -5,22 +5,25 @@
  */
 package model;
 
+import java.util.Date;
+
 /**
  *
  * @author User
  */
-public class AcoesMamifero {
-    
-    
+public class AcoesMamifero extends AcoesDiarias {
+
     private boolean passear;
     private boolean banho;
 
-    public AcoesMamifero(boolean passear, boolean banho) {
+    public AcoesMamifero() {
+    }
+
+    public AcoesMamifero(boolean passear, boolean banho, int idAnimal, Date data, boolean comerAlimento, boolean beberAgua, float qtdAlimento) {
+        super(idAnimal, data, comerAlimento, beberAgua, qtdAlimento);
         this.passear = passear;
         this.banho = banho;
     }
-    
-    
 
     public boolean isPassear() {
         return passear;
@@ -37,6 +40,5 @@ public class AcoesMamifero {
     public void setBanho(boolean banho) {
         this.banho = banho;
     }
-    
-    
+
 }

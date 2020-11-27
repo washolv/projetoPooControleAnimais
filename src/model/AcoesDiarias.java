@@ -15,6 +15,7 @@ public class AcoesDiarias {
     
     private int id;
     private Date data;
+    private int idAnimal;
     private boolean comerAlimento;
     private boolean beberAgua;
     private float qtdAlimento;
@@ -23,12 +24,20 @@ public class AcoesDiarias {
     }
     
 
-    public AcoesDiarias(int id, Date data, boolean comerAlimento, boolean beberAgua, float qtdAlimento) {
-        this.id = id;
+    public AcoesDiarias(int idAnimal, Date data, boolean comerAlimento, boolean beberAgua, float qtdAlimento) {
+        this.idAnimal = idAnimal;
         this.data = data;
         this.comerAlimento = comerAlimento;
         this.beberAgua = beberAgua;
         this.qtdAlimento = qtdAlimento;
+    }
+
+    public int getIdAnimal() {
+        return idAnimal;
+    }
+
+    public void setIdAnimal(int idAnimal) {
+        this.idAnimal = idAnimal;
     }
   
 
