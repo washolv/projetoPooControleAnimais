@@ -26,6 +26,7 @@ public class ControleAnimais extends javax.swing.JFrame {
         lblPsqNome.setVisible(false);
         txtPsqNome.setVisible(false);
         btnBuscar.setVisible(false);
+        btnBuscarInferior.setEnabled(false);
     }
 
     /**
@@ -57,8 +58,8 @@ public class ControleAnimais extends javax.swing.JFrame {
         txtNomeAnimal = new javax.swing.JTextField();
         txtQtdAlimento = new javax.swing.JTextField();
         txtNumeroCadastro = new javax.swing.JTextField();
-        jLabel9 = new javax.swing.JLabel();
-        jLabel10 = new javax.swing.JLabel();
+        lblPasseou = new javax.swing.JLabel();
+        lblBanho = new javax.swing.JLabel();
         comboComeuAlimento = new javax.swing.JComboBox<>();
         comboBebeuAgua = new javax.swing.JComboBox<>();
         comboBanho = new javax.swing.JComboBox<>();
@@ -197,9 +198,11 @@ public class ControleAnimais extends javax.swing.JFrame {
             }
         });
 
-        jLabel9.setText("Passeou");
+        txtNumeroCadastro.setEditable(false);
 
-        jLabel10.setText("Banho");
+        lblPasseou.setText("Passeou");
+
+        lblBanho.setText("Banho");
 
         comboComeuAlimento.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Sim", "Não" }));
         comboComeuAlimento.setEnabled(false);
@@ -216,6 +219,7 @@ public class ControleAnimais extends javax.swing.JFrame {
         dataAcao.setEnabled(false);
 
         btnBuscarInferior.setText("Buscar");
+        btnBuscarInferior.setEnabled(false);
         btnBuscarInferior.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnBuscarInferiorActionPerformed(evt);
@@ -249,8 +253,8 @@ public class ControleAnimais extends javax.swing.JFrame {
                     .addComponent(jLabel6)
                     .addComponent(jLabel7)
                     .addComponent(jLabel8)
-                    .addComponent(jLabel9)
-                    .addComponent(jLabel10)
+                    .addComponent(lblPasseou)
+                    .addComponent(lblBanho)
                     .addComponent(jLabel12))
                 .addGap(44, 44, 44)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -274,7 +278,7 @@ public class ControleAnimais extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(comboAnimal2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel12))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 17, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 8, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
                     .addComponent(txtNumeroCadastro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -302,21 +306,24 @@ public class ControleAnimais extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(13, 13, 13)
-                        .addComponent(jLabel9))
+                        .addComponent(lblPasseou))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(comboPasseou, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel10)
+                    .addComponent(lblBanho)
                     .addComponent(comboBanho, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
         );
 
         btnAlterar.setText("Alterar");
+        btnAlterar.setEnabled(false);
 
         btnExcluir.setText("Excluir");
+        btnExcluir.setEnabled(false);
 
         btnSalvar.setText("Salvar");
+        btnSalvar.setEnabled(false);
         btnSalvar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnSalvarActionPerformed(evt);
@@ -333,18 +340,18 @@ public class ControleAnimais extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
+                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnSalvar)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnSair, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
                         .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(34, 34, 34)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(btnExcluir)
                             .addComponent(btnAlterar))
-                        .addGap(0, 22, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnSalvar)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnSair, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(0, 22, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -359,17 +366,15 @@ public class ControleAnimais extends javax.swing.JFrame {
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGap(18, 18, 18))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(0, 0, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(btnSalvar)
-                            .addComponent(btnSair))
-                        .addGap(27, 27, 27))))
+                            .addComponent(btnSair)))
+                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(27, 27, 27))
         );
 
         jPanel1.getAccessibleContext().setAccessibleName("Cadastrar Ação Diária ");
@@ -415,22 +420,36 @@ public class ControleAnimais extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_comboAnimalItemStateChanged
     private void habilitaCampos() {
-        if (controller.buscar(((String) comboAnimal2.getSelectedItem()), Integer.parseInt(txtNumeroCadastro.getText()))) {
-            txtNomeAnimal.setEditable(true);
-            dataAcao.setEnabled(true);
-            comboComeuAlimento.setEnabled(true);
-            comboBebeuAgua.setEnabled(true);
-            comboPasseou.setEnabled(true);
-            comboBanho.setEnabled(true);
+        String nome = controller.buscar(((String) comboAnimal2.getSelectedItem()), Integer.parseInt(txtNumeroCadastro.getText()));
+        if (nome != null) {
+            setarCamposEditaveis();
+            txtNomeAnimal.setText(nome);
         } else {
-            txtNomeAnimal.setEditable(false);
-            dataAcao.setEnabled(false);
-            comboComeuAlimento.setEnabled(false);
-            comboBebeuAgua.setEnabled(false);
-            comboPasseou.setEnabled(false);
-            comboBanho.setEnabled(false);
-            JOptionPane.showMessageDialog(this, "Animal Não Encontrado");
+            setarCamposNulos();
         }
+    }
+
+    public void setarCamposNulos() {
+        txtNomeAnimal.setEditable(false);
+        dataAcao.setEnabled(false);
+        comboComeuAlimento.setEnabled(false);
+        comboBebeuAgua.setEnabled(false);
+        comboPasseou.setEnabled(false);
+        comboBanho.setEnabled(false);
+        txtQtdAlimento.setEditable(false);
+        txtNomeAnimal.setText(null);
+        txtNomeAnimal.setText(null);
+        txtNumeroCadastro.setText(null);
+    }
+
+    public void setarCamposEditaveis() {
+        dataAcao.setEnabled(true);
+        btnBuscarInferior.setEnabled(true);
+        comboComeuAlimento.setEnabled(true);
+        comboBebeuAgua.setEnabled(true);
+        comboPasseou.setEnabled(true);
+        comboBanho.setEnabled(true);
+        txtQtdAlimento.setEditable(true);
     }
     private void comboAnimalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboAnimalActionPerformed
         // TODO add your handling code here:
@@ -441,27 +460,30 @@ public class ControleAnimais extends javax.swing.JFrame {
     }//GEN-LAST:event_btnBuscarActionPerformed
 
     private void btnBuscarInferiorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarInferiorActionPerformed
-        if (controller.buscar(((String) comboAnimal2.getSelectedItem()), Integer.parseInt(txtNumeroCadastro.getText()))) {
-            txtNomeAnimal.setEditable(true);
-            dataAcao.setEnabled(true);
-            comboComeuAlimento.setEnabled(true);
-            comboBebeuAgua.setEnabled(true);
-            comboPasseou.setEnabled(true);
-            comboBanho.setEnabled(true);
-        }
-
+        habilitaCampos();
     }//GEN-LAST:event_btnBuscarInferiorActionPerformed
 
     private void comboAnimal2ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_comboAnimal2ItemStateChanged
         if (((String) comboAnimal2.getSelectedItem()).equals("-")) {
-
+            setarCamposNulos();
+            txtNumeroCadastro.setEditable(false);
+            btnBuscarInferior.setEnabled(false);
         } else if (((String) comboAnimal2.getSelectedItem()).equals("Mamifero")) {
+            setarCamposNulos();
             comboBanho.setVisible(true);
             comboPasseou.setVisible(true);
+            lblBanho.setVisible(true);
+            lblPasseou.setVisible(true);
+            btnBuscarInferior.setEnabled(true);
+            txtNumeroCadastro.setEditable(true);
         } else {
+            setarCamposNulos();
+            btnBuscarInferior.setEnabled(true);
+            txtNumeroCadastro.setEditable(true);
             comboBanho.setVisible(false);
             comboPasseou.setVisible(false);
-
+            lblBanho.setVisible(false);
+            lblPasseou.setVisible(false);
         }
     }//GEN-LAST:event_comboAnimal2ItemStateChanged
 
@@ -518,7 +540,6 @@ public class ControleAnimais extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> comboComeuAlimento;
     private javax.swing.JComboBox<String> comboPasseou;
     private com.toedter.calendar.JDateChooser dataAcao;
-    private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel3;
@@ -527,11 +548,12 @@ public class ControleAnimais extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
-    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JLabel lblBanho;
     private javax.swing.JLabel lblNumCadastro;
+    private javax.swing.JLabel lblPasseou;
     private javax.swing.JLabel lblPsqNome;
     private javax.swing.JTable tblAcoesDiarias;
     private javax.swing.JTextField txtNomeAnimal;

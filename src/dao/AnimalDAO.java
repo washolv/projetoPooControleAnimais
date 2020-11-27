@@ -235,9 +235,10 @@ public class AnimalDAO {
 
     }
 
-    public static boolean buscar(String tabela, int id) {
-        boolean retorno = false;
-        int linhasAfetadas = 0;
+    public static String buscar(String tabela, int id) {
+        String retorno = null;
+        ResultSet rs = null;
+        Animal animal = new Animal();
         PreparedStatement addSQL = null;
         conexao = ConexaoMySql.getConexaoMySQL();
 
@@ -248,17 +249,20 @@ public class AnimalDAO {
                 addSQL = conexao.prepareStatement("Select * FROM Mamifero WHERE id = ?");
                 addSQL.setInt(1, id);
 
-                retorno = addSQL.execute();
+                rs = addSQL.executeQuery();
             } else {
                 addSQL = conexao.prepareStatement("Select * FROM Ave WHERE id = ?");
                 addSQL.setInt(1, id);
 
-                linhasAfetadas = addSQL.executeUpdate();
+                rs = addSQL.executeQuery();
             }           
+            if(rs.next()){
+                retorno=rs.getString("nome");
+            }
         } catch (Exception e) {
             System.err.println(e.getMessage());
 
-            retorno = false;
+            retorno = null;
         } finally {
 
             if (addSQL != null) {
