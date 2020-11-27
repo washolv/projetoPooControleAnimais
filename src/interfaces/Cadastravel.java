@@ -18,7 +18,7 @@ public interface Cadastravel {
 
     public abstract boolean alterar(Object animal);
 
-    public abstract ArrayList<Object> pesquisar(String pesquisar);
+    public abstract ArrayList<Object> pesquisar(String pesquisar, int id);
 
     public abstract boolean excluir(String tabela, int id);
 

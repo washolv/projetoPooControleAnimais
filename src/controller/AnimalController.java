@@ -41,7 +41,7 @@ public class AnimalController implements Cadastravel {
     }
 
     @Override
-    public ArrayList<Object> pesquisar(String pesquisa) {
+    public ArrayList<Object> pesquisar(String pesquisa, int id) {
         ArrayList<Object> animais = AnimalDAO.listarAnimal(pesquisa);
 
         return animais;

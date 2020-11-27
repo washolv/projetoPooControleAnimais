@@ -480,7 +480,7 @@ public class CadastroAnimais extends javax.swing.JFrame {
     private void CarregaTabela() {
 
         ArrayList<Object> listaAnimal;
-        listaAnimal = controller.pesquisar((String) caixaAnimal.getSelectedItem());
+        listaAnimal = controller.pesquisar((String) caixaAnimal.getSelectedItem(), 0);
 
         DefaultTableModel modelo = (DefaultTableModel) tblAnimal.getModel();
         modelo.setRowCount(0);
