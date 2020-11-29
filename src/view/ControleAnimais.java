@@ -6,11 +6,16 @@
 package view;
 
 import controller.AcoesDiariasController;
+import java.util.ArrayList;
 import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
+import javax.swing.JTextField;
+import javax.swing.table.DefaultTableModel;
 import model.AcoesAve;
 import model.AcoesDiarias;
 import model.AcoesMamifero;
+import model.Animal;
+import model.Ave;
 
 public class ControleAnimais extends javax.swing.JFrame {
 
@@ -439,11 +444,14 @@ public class ControleAnimais extends javax.swing.JFrame {
             btnBuscar.setVisible(true);
         }
     }//GEN-LAST:event_comboAnimalItemStateChanged
-    private void habilitaCampos() {
-        String nome = controller.buscar(((String) comboAnimal2.getSelectedItem()), Integer.parseInt(txtNumeroCadastro.getText()));
+    private void habilitaCampos(JComboBox combo, JTextField num) {
+        String tabela = (String) combo.getSelectedItem();
+        int numCadastro = Integer.parseInt(num.getText());
+        String nome = controller.buscar(tabela, numCadastro);
         if (nome != null) {
             setarCamposEditaveis();
             txtNomeAnimal.setText(nome);
+            controller.pesquisar(tabela, numCadastro);
         } else {
             JOptionPane.showMessageDialog(this, "Animal não encontrado");
             setarCamposNulos();
@@ -479,11 +487,11 @@ public class ControleAnimais extends javax.swing.JFrame {
     }//GEN-LAST:event_comboAnimalActionPerformed
 
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
-        // TODO add your handling code here:
+        CarregaTabela(comboAnimal, txtNumCadastro);
     }//GEN-LAST:event_btnBuscarActionPerformed
 
     private void btnBuscarInferiorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarInferiorActionPerformed
-        habilitaCampos();
+        habilitaCampos(comboAnimal2, txtNumeroCadastro);
     }//GEN-LAST:event_btnBuscarInferiorActionPerformed
 
     private void comboAnimal2ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_comboAnimal2ItemStateChanged
@@ -510,6 +518,64 @@ public class ControleAnimais extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_comboAnimal2ItemStateChanged
 
+    private void CarregaTabela(JComboBox combo, JTextField id) {
+        ArrayList<Object> acoes;
+        acoes = controller.pesquisar((String) combo.getSelectedItem(), Integer.parseInt(id.getText()));
+        for (Object acao : acoes) {
+            if (acao instanceof AcoesMamifero) {
+                insereAcaoMamifero((AcoesMamifero) acao);
+            } else {
+                insereAcaoAve((AcoesAve) acao);
+            }
+        }
+    }
+
+    public void insereAcaoMamifero(AcoesMamifero acao) {
+        DefaultTableModel modelo = (DefaultTableModel) tblAcoesDiarias.getModel();
+        modelo.setRowCount(0);
+
+        tblAcoesDiarias.getColumnModel().getColumn(0).setMinWidth(0);
+        tblAcoesDiarias.getColumnModel().getColumn(0).setMaxWidth(0);
+        tblAcoesDiarias.getColumnModel().getColumn(5).setMinWidth(100);
+        tblAcoesDiarias.getColumnModel().getColumn(5).setMaxWidth(100);
+        tblAcoesDiarias.getColumnModel().getColumn(6).setMinWidth(100);
+        tblAcoesDiarias.getColumnModel().getColumn(6).setMaxWidth(100);
+        modelo.addRow(new Object[]{
+            acao.getId(),
+            acao.getData(),
+            trueOrFalse(acao.isComerAlimento()),
+            acao.getQtdAlimento(),
+            trueOrFalse(acao.isBeberAgua()),
+            trueOrFalse(acao.isPassear()),
+            trueOrFalse(acao.isBanho())});
+    }
+
+    public void insereAcaoAve(AcoesAve acao) {
+        DefaultTableModel modelo = (DefaultTableModel) tblAcoesDiarias.getModel();
+        modelo.setRowCount(0);
+
+        tblAcoesDiarias.getColumnModel().getColumn(0).setMinWidth(0);
+        tblAcoesDiarias.getColumnModel().getColumn(0).setMaxWidth(0);
+        tblAcoesDiarias.getColumnModel().getColumn(5).setMinWidth(0);
+        tblAcoesDiarias.getColumnModel().getColumn(5).setMaxWidth(0);
+        tblAcoesDiarias.getColumnModel().getColumn(6).setMinWidth(0);
+        tblAcoesDiarias.getColumnModel().getColumn(6).setMaxWidth(0);
+
+        modelo.addRow(new Object[]{
+            acao.getId(),
+            acao.getData(),
+            trueOrFalse(acao.isComerAlimento()),
+            acao.getQtdAlimento(),
+            trueOrFalse(acao.isBeberAgua())});
+    }
+
+    public static String trueOrFalse(boolean condicao) {
+        if (condicao) {
+            return "sim";
+        } else {
+            return "nao";
+        }
+    }
     private void comboAnimal2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboAnimal2ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_comboAnimal2ActionPerformed

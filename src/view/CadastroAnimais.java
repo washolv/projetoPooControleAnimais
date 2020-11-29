@@ -478,44 +478,53 @@ public class CadastroAnimais extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jButton3ActionPerformed
     private void CarregaTabela() {
-
         ArrayList<Object> listaAnimal;
         listaAnimal = controller.pesquisar((String) caixaAnimal.getSelectedItem(), 0);
-
-        DefaultTableModel modelo = (DefaultTableModel) tblAnimal.getModel();
-        modelo.setRowCount(0);
-
         for (Object animal : listaAnimal) {
             Animal ani = (Animal) animal;
             if (animal instanceof Ave) {
-                tblAnimal.getColumnModel().getColumn(0).setMinWidth(0);
-                tblAnimal.getColumnModel().getColumn(0).setMaxWidth(0);
-                tblAnimal.getColumnModel().getColumn(7).setMinWidth(100);
-                tblAnimal.getColumnModel().getColumn(7).setMaxWidth(100);
-                modelo.addRow(new Object[]{
-                    ani.getId(),
-                    ani.getTipo(),
-                    ani.getNome(),
-                    ani.getRaca(),
-                    ani.getIdade(),
-                    ani.getPeso(),
-                    ani.getAlimento(),
-                    ((Ave) ani).getCod_liberacao()});
+                insereLinhaMamifero(ani);
             } else {
-                tblAnimal.getColumnModel().getColumn(0).setMinWidth(0);
-                tblAnimal.getColumnModel().getColumn(0).setMaxWidth(0);
-                tblAnimal.getColumnModel().getColumn(7).setMinWidth(0);
-                tblAnimal.getColumnModel().getColumn(7).setMaxWidth(0);
-                modelo.addRow(new Object[]{
-                    ani.getId(),
-                    ani.getTipo(),
-                    ani.getNome(),
-                    ani.getRaca(),
-                    ani.getIdade(),
-                    ani.getPeso(),
-                    ani.getAlimento()});
+                insereLinhaAve(ani);
             }
         }
+    }
+
+    public void insereLinhaMamifero(Animal ani) {
+        DefaultTableModel modelo = (DefaultTableModel) tblAnimal.getModel();
+        modelo.setRowCount(0);
+
+        tblAnimal.getColumnModel().getColumn(0).setMinWidth(0);
+        tblAnimal.getColumnModel().getColumn(0).setMaxWidth(0);
+        tblAnimal.getColumnModel().getColumn(7).setMinWidth(100);
+        tblAnimal.getColumnModel().getColumn(7).setMaxWidth(100);
+        modelo.addRow(new Object[]{
+            ani.getId(),
+            ani.getTipo(),
+            ani.getNome(),
+            ani.getRaca(),
+            ani.getIdade(),
+            ani.getPeso(),
+            ani.getAlimento(),
+            ((Ave) ani).getCod_liberacao()});
+    }
+
+    public void insereLinhaAve(Animal ani) {
+        DefaultTableModel modelo = (DefaultTableModel) tblAnimal.getModel();
+        modelo.setRowCount(0);
+
+        tblAnimal.getColumnModel().getColumn(0).setMinWidth(0);
+        tblAnimal.getColumnModel().getColumn(0).setMaxWidth(0);
+        tblAnimal.getColumnModel().getColumn(7).setMinWidth(0);
+        tblAnimal.getColumnModel().getColumn(7).setMaxWidth(0);
+        modelo.addRow(new Object[]{
+            ani.getId(),
+            ani.getTipo(),
+            ani.getNome(),
+            ani.getRaca(),
+            ani.getIdade(),
+            ani.getPeso(),
+            ani.getAlimento()});
     }
 
     public static void main(String args[]) {

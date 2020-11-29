@@ -14,9 +14,9 @@ import model.Animal;
  */
 public interface Cadastravel {
 
-    public abstract boolean cadastrar(Object animal);
+    public abstract boolean cadastrar(Object object);
 
-    public abstract boolean alterar(Object animal);
+    public abstract boolean alterar(Object object);
 
     public abstract ArrayList<Object> pesquisar(String pesquisar, int id);
 
