@@ -12,7 +12,7 @@ import java.util.Date;
  * @author User
  */
 public class AcoesDiarias {
-    
+
     private int id;
     private Date data;
     private int idAnimal;
@@ -22,7 +22,6 @@ public class AcoesDiarias {
 
     public AcoesDiarias() {
     }
-    
 
     public AcoesDiarias(int idAnimal, Date data, boolean comerAlimento, boolean beberAgua, float qtdAlimento) {
         this.idAnimal = idAnimal;
@@ -32,6 +31,17 @@ public class AcoesDiarias {
         this.qtdAlimento = qtdAlimento;
     }
 
+  
+    public AcoesDiarias(int id, int idAnimal, Date data, boolean comerAlimento, boolean beberAgua, float qtdAlimento) {
+        this.id=id;
+        this.idAnimal = idAnimal;
+        this.data = data;
+        this.comerAlimento = comerAlimento;
+        this.beberAgua = beberAgua;
+        this.qtdAlimento = qtdAlimento;
+    }
+    
+
     public int getIdAnimal() {
         return idAnimal;
     }
@@ -39,7 +49,6 @@ public class AcoesDiarias {
     public void setIdAnimal(int idAnimal) {
         this.idAnimal = idAnimal;
     }
-  
 
     public Date getData() {
         return data;
@@ -73,16 +82,12 @@ public class AcoesDiarias {
         this.qtdAlimento = qtdAlimento;
     }
 
-    
-
     public int getId() {
         return id;
     }
 
-    public void setIdAcao(int idAcao) {
-        this.id = idAcao;
+    public void setId(int id) {
+        this.id = id;
     }
-    
-    
-    
+
 }

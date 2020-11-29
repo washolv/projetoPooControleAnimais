@@ -5,8 +5,14 @@
  */
 package view;
 
+import com.toedter.calendar.JDateChooser;
 import controller.AcoesDiariasController;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
@@ -20,9 +26,12 @@ import model.Ave;
 public class ControleAnimais extends javax.swing.JFrame {
 
     AcoesDiariasController controller = new AcoesDiariasController();
+    String modoTela = "Criação";
 
     public ControleAnimais() {
         initComponents();
+        tblAcoesDiarias.getColumnModel().getColumn(0).setMinWidth(0);
+        tblAcoesDiarias.getColumnModel().getColumn(0).setMaxWidth(0);
         txtNumCadastro.setVisible(false);
         lblNumCadastro.setVisible(false);
         lblPsqNome.setVisible(false);
@@ -201,16 +210,21 @@ public class ControleAnimais extends javax.swing.JFrame {
 
         lblBanho.setText("Banho");
 
-        comboComeuAlimento.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Sim", "Não" }));
+        comboComeuAlimento.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "sim", "nao" }));
         comboComeuAlimento.setEnabled(false);
 
-        comboBebeuAgua.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Sim", "Não" }));
+        comboBebeuAgua.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "sim", "nao" }));
         comboBebeuAgua.setEnabled(false);
+        comboBebeuAgua.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                comboBebeuAguaActionPerformed(evt);
+            }
+        });
 
-        comboBanho.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Sim", "Não" }));
+        comboBanho.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "sim", "nao" }));
         comboBanho.setEnabled(false);
 
-        comboPasseou.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Sim", "Não" }));
+        comboPasseou.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "sim", "nao" }));
         comboPasseou.setEnabled(false);
 
         dataAcao.setEnabled(false);
@@ -314,7 +328,11 @@ public class ControleAnimais extends javax.swing.JFrame {
         );
 
         btnAlterar.setText("Alterar");
-        btnAlterar.setEnabled(false);
+        btnAlterar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAlterarActionPerformed(evt);
+            }
+        });
 
         btnExcluir.setText("Excluir");
         btnExcluir.setEnabled(false);
@@ -347,7 +365,7 @@ public class ControleAnimais extends javax.swing.JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(btnExcluir)
                             .addComponent(btnAlterar))
-                        .addGap(0, 22, Short.MAX_VALUE)))
+                        .addGap(0, 29, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -393,8 +411,9 @@ public class ControleAnimais extends javax.swing.JFrame {
     private void txtQtdAlimentoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtQtdAlimentoActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtQtdAlimentoActionPerformed
+
     private boolean acoes(JComboBox combo) {
-        if (((String) combo.getSelectedItem()).equals("Sim")) {
+        if (((String) combo.getSelectedItem()).equals("sim")) {
             return true;
         } else {
             return false;
@@ -414,17 +433,38 @@ public class ControleAnimais extends javax.swing.JFrame {
     }
     private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
         AcoesDiarias acao;
-        if (((String) comboAnimal2.getSelectedItem()).equals("Mamifero")) {
-            acao = acaoMamifero();
+        if (modoTela.equals("Criação")) {
+            if (((String) comboAnimal2.getSelectedItem()).equals("Mamifero")) {
+                acao = acaoMamifero();
+            } else {
+                acao = acaoAve();
+            }
+            if (controller.cadastrar(acao)) {
+                JOptionPane.showMessageDialog(this, "Ação Cadastrada!");
+                setarCamposNulos();
+            } else {
+                JOptionPane.showMessageDialog(this, "Houve um erro ao Cadastrar a Ação!");
+            }
         } else {
-            acao = acaoAve();
+            if (((String) comboAnimal2.getSelectedItem()).equals("Mamifero")) {
+                acao = acaoMamifero();
+                int numeroLinha = tblAcoesDiarias.getSelectedRow();
+                acao.setId(Integer.parseInt(tblAcoesDiarias.getModel().getValueAt(numeroLinha, 0).toString()));
+
+            } else {
+                acao = acaoAve();
+                int numeroLinha = tblAcoesDiarias.getSelectedRow();
+                acao.setId(Integer.parseInt(tblAcoesDiarias.getModel().getValueAt(numeroLinha, 0).toString()));
+            }
+            if (controller.alterar(acao)) {
+                JOptionPane.showMessageDialog(this, "Ação Alterada!");
+                setarCamposNulos();
+            } else {
+                JOptionPane.showMessageDialog(this, "Houve um erro ao alterar a Ação!");
+            }
         }
-        if (controller.cadastrar(acao)) {
-            JOptionPane.showMessageDialog(this, "Ação Cadastrada!");
-            setarCamposNulos();
-        } else {
-            JOptionPane.showMessageDialog(this, "Houve um erro ao Cadastrar a Ação!");
-        }
+        modoTela = "Criação";
+        setarCamposNulos();
     }//GEN-LAST:event_btnSalvarActionPerformed
 
     private void comboAnimalItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_comboAnimalItemStateChanged
@@ -444,14 +484,25 @@ public class ControleAnimais extends javax.swing.JFrame {
             btnBuscar.setVisible(true);
         }
     }//GEN-LAST:event_comboAnimalItemStateChanged
-    private void habilitaCampos(JComboBox combo, JTextField num) {
+    private void buscarAnimalTabela(JComboBox combo, JTextField num) {
         String tabela = (String) combo.getSelectedItem();
         int numCadastro = Integer.parseInt(num.getText());
         String nome = controller.buscar(tabela, numCadastro);
         if (nome != null) {
-            setarCamposEditaveis();
+            txtPsqNome.setText(nome);
+        } else {
+            JOptionPane.showMessageDialog(this, "Animal não encontrado");
+            setarCamposNulos();
+        }
+    }
+
+    private void buscarAnimal(JComboBox combo, JTextField num) {
+        String tabela = (String) combo.getSelectedItem();
+        int numCadastro = Integer.parseInt(num.getText());
+        String nome = controller.buscar(tabela, numCadastro);
+        if (nome != null) {
             txtNomeAnimal.setText(nome);
-            controller.pesquisar(tabela, numCadastro);
+            setarCamposEditaveis();
         } else {
             JOptionPane.showMessageDialog(this, "Animal não encontrado");
             setarCamposNulos();
@@ -487,11 +538,12 @@ public class ControleAnimais extends javax.swing.JFrame {
     }//GEN-LAST:event_comboAnimalActionPerformed
 
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
+        buscarAnimalTabela(comboAnimal, txtNumCadastro);
         CarregaTabela(comboAnimal, txtNumCadastro);
     }//GEN-LAST:event_btnBuscarActionPerformed
 
     private void btnBuscarInferiorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarInferiorActionPerformed
-        habilitaCampos(comboAnimal2, txtNumeroCadastro);
+        buscarAnimal(comboAnimal2, txtNumeroCadastro);
     }//GEN-LAST:event_btnBuscarInferiorActionPerformed
 
     private void comboAnimal2ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_comboAnimal2ItemStateChanged
@@ -501,22 +553,29 @@ public class ControleAnimais extends javax.swing.JFrame {
             btnBuscarInferior.setEnabled(false);
         } else if (((String) comboAnimal2.getSelectedItem()).equals("Mamifero")) {
             setarCamposNulos();
-            comboBanho.setVisible(true);
-            comboPasseou.setVisible(true);
-            lblBanho.setVisible(true);
-            lblPasseou.setVisible(true);
-            btnBuscarInferior.setEnabled(true);
-            txtNumeroCadastro.setEditable(true);
+            setarCamposMamifero();
         } else {
             setarCamposNulos();
-            btnBuscarInferior.setEnabled(true);
-            txtNumeroCadastro.setEditable(true);
-            comboBanho.setVisible(false);
-            comboPasseou.setVisible(false);
-            lblBanho.setVisible(false);
-            lblPasseou.setVisible(false);
+            setarCamposAve();
         }
     }//GEN-LAST:event_comboAnimal2ItemStateChanged
+    public void setarCamposMamifero() {
+        comboBanho.setVisible(true);
+        comboPasseou.setVisible(true);
+        lblBanho.setVisible(true);
+        lblPasseou.setVisible(true);
+        btnBuscarInferior.setEnabled(true);
+        txtNumeroCadastro.setEditable(true);
+    }
+
+    public void setarCamposAve() {
+        btnBuscarInferior.setEnabled(true);
+        txtNumeroCadastro.setEditable(true);
+        comboBanho.setVisible(false);
+        comboPasseou.setVisible(false);
+        lblBanho.setVisible(false);
+        lblPasseou.setVisible(false);
+    }
 
     private void CarregaTabela(JComboBox combo, JTextField id) {
         ArrayList<Object> acoes;
@@ -541,7 +600,7 @@ public class ControleAnimais extends javax.swing.JFrame {
         tblAcoesDiarias.getColumnModel().getColumn(6).setMinWidth(100);
         tblAcoesDiarias.getColumnModel().getColumn(6).setMaxWidth(100);
         modelo.addRow(new Object[]{
-            acao.getId(),
+            acao.getIdAnimal(),
             acao.getData(),
             trueOrFalse(acao.isComerAlimento()),
             acao.getQtdAlimento(),
@@ -562,7 +621,7 @@ public class ControleAnimais extends javax.swing.JFrame {
         tblAcoesDiarias.getColumnModel().getColumn(6).setMaxWidth(0);
 
         modelo.addRow(new Object[]{
-            acao.getId(),
+            acao.getIdAnimal(),
             acao.getData(),
             trueOrFalse(acao.isComerAlimento()),
             acao.getQtdAlimento(),
@@ -579,6 +638,59 @@ public class ControleAnimais extends javax.swing.JFrame {
     private void comboAnimal2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboAnimal2ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_comboAnimal2ActionPerformed
+
+    private void btnAlterarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAlterarActionPerformed
+        modoTela = "Alteração";
+        if (((String) comboAnimal.getSelectedItem()).equals("Mamifero")) {
+            comboAnimal2.setSelectedIndex(1);
+            inserirCampos("Mamifero");
+        } else {
+            comboAnimal2.setSelectedIndex(2);
+            inserirCampos("Ave");
+        }
+        setarCamposEditaveis();
+        
+    }//GEN-LAST:event_btnAlterarActionPerformed
+
+    private void comboBebeuAguaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboBebeuAguaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_comboBebeuAguaActionPerformed
+
+    public void inserirCampos(String tipo) {
+        if (tblAcoesDiarias.getRowCount() > 0) {
+            int numeroLinha = tblAcoesDiarias.getSelectedRow();
+            if (tipo.equals("Mamifero")) {
+                txtNumeroCadastro.setText(tblAcoesDiarias.getModel().getValueAt(numeroLinha, 0).toString());
+                txtNomeAnimal.setText(txtPsqNome.getText());
+                comboComeuAlimento.setSelectedItem(tblAcoesDiarias.getModel().getValueAt(numeroLinha, 2).toString());
+                txtQtdAlimento.setText(tblAcoesDiarias.getModel().getValueAt(numeroLinha, 3).toString());
+                comboBebeuAgua.setSelectedItem(tblAcoesDiarias.getModel().getValueAt(numeroLinha, 4).toString());
+                comboPasseou.setSelectedItem(tblAcoesDiarias.getModel().getValueAt(numeroLinha, 5).toString());
+                comboBanho.setSelectedItem(tblAcoesDiarias.getModel().getValueAt(numeroLinha, 6).toString());
+                try {
+                    dataAcao.setDate(new SimpleDateFormat("yyyy-MM-dd").parse(tblAcoesDiarias.getModel().getValueAt(numeroLinha, 1).toString()));
+                } catch (ParseException ex) {
+                    Logger.getLogger(ControleAnimais.class.getName()).log(Level.SEVERE, null, ex);
+                }
+
+            } else {
+                txtNumeroCadastro.setText(tblAcoesDiarias.getModel().getValueAt(numeroLinha, 0).toString());
+                txtNomeAnimal.setText(txtPsqNome.getText());
+                comboComeuAlimento.setSelectedItem(tblAcoesDiarias.getModel().getValueAt(numeroLinha, 2).toString());
+                txtQtdAlimento.setText(tblAcoesDiarias.getModel().getValueAt(numeroLinha, 3).toString());
+                comboBebeuAgua.setSelectedItem(tblAcoesDiarias.getModel().getValueAt(numeroLinha, 4).toString());
+                try {
+                    dataAcao.setDate(new SimpleDateFormat("yyyy-MM-dd").parse(tblAcoesDiarias.getModel().getValueAt(numeroLinha, 1).toString()));
+                } catch (ParseException ex) {
+                    Logger.getLogger(ControleAnimais.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+
+        } else {
+            JOptionPane.showMessageDialog(this, "Selecione um animal da tabela!");
+
+        }
+    }
 
     /**
      * @param args the command line arguments

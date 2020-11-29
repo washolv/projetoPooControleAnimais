@@ -360,6 +360,7 @@ public class CadastroAnimais extends javax.swing.JFrame {
         } else {
             JOptionPane.showMessageDialog(this, "Selecione um animal da tabela!");
         }
+        boxAnimalCadastrar.setEnabled(false);
         modoTela = "Alteração";
     }//GEN-LAST:event_btnAlterarActionPerformed
 
@@ -420,9 +421,11 @@ public class CadastroAnimais extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(this, "Falha ao gravar no banco de dados\n" + e.getMessage(),
                         "Aviso de Falha", JOptionPane.ERROR_MESSAGE);
             }
-            modoTela = "Criação";
         }
-
+        setarCamposNulos();
+        
+    }//GEN-LAST:event_btnSalvarActionPerformed
+    public void setarCamposNulos() {
         txtTipo.setText(null);
         txtNome.setText(null);
         txtRaca.setText(null);
@@ -430,9 +433,9 @@ public class CadastroAnimais extends javax.swing.JFrame {
         txtPeso.setText(null);
         txtQtdAlimento.setText(null);
         txtCodLiberacao.setText(null);
+        boxAnimalCadastrar.setEnabled(true);
         modoTela = "Criação";
-    }//GEN-LAST:event_btnSalvarActionPerformed
-
+    }
     private void txtCodLiberacaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCodLiberacaoActionPerformed
     }//GEN-LAST:event_txtCodLiberacaoActionPerformed
 

@@ -33,7 +33,7 @@ public class AcoesDiariasDAO {
         PreparedStatement addSQL = null;
         conexao = ConexaoMySql.getConexaoMySQL();
         ResultSet rs = null;
-        ArrayList<Object> listarAcoes=new ArrayList<Object>();
+        ArrayList<Object> listarAcoes = new ArrayList<Object>();
         PreparedStatement instrucaoSQL = null;
         try {
             conexao = ConexaoMySql.getConexaoMySQL();
@@ -42,14 +42,15 @@ public class AcoesDiariasDAO {
                 addSQL.setInt(1, id);
                 rs = addSQL.executeQuery();
                 Ave ave;
-                while (rs.next()) {                 
+                while (rs.next()) {
                     AcoesDiarias acao = new AcoesMamifero(StringToBoolean(rs.getString("passear")),
-                                                            StringToBoolean(rs.getString("banho")),
-                                                            rs.getInt("id"),
-                                                            rs.getDate("dataAcao"),
-                                                            StringToBoolean(rs.getString("comerAlimento")),
-                                                            StringToBoolean(rs.getString("beberAgua")),
-                                                            rs.getFloat("qtdAlimento"));
+                            StringToBoolean(rs.getString("banho")),
+                            rs.getInt("id"),
+                            rs.getInt("idAnimal"),
+                            rs.getDate("dataAcao"),
+                            StringToBoolean(rs.getString("comerAlimento")),
+                            StringToBoolean(rs.getString("beberAgua")),
+                            rs.getFloat("qtdAlimento"));
                     listarAcoes.add(acao);
                 }
             } else {
@@ -57,12 +58,13 @@ public class AcoesDiariasDAO {
                 addSQL.setInt(1, id);
                 rs = addSQL.executeQuery();
                 Ave ave;
-               while (rs.next()) {                 
+                while (rs.next()) {
                     AcoesDiarias acao = new AcoesAve(rs.getInt("id"),
-                                                     rs.getDate("dataAcao"),
-                                                     StringToBoolean(rs.getString("comerAlimento")),
-                                                     StringToBoolean(rs.getString("beberAgua")),
-                                                     rs.getFloat("qtdAlimento"));
+                            rs.getInt("idAve"),
+                            rs.getDate("dataAcao"),
+                            StringToBoolean(rs.getString("comerAlimento")),
+                            StringToBoolean(rs.getString("beberAgua")),
+                            rs.getFloat("qtdAlimento"));
                     listarAcoes.add(acao);
                 }
             }
@@ -149,7 +151,67 @@ public class AcoesDiariasDAO {
         boolean retorno = false;
         PreparedStatement addSQL = null;
         conexao = ConexaoMySql.getConexaoMySQL();
-        PreparedStatement instrucaoSQL = null;
+        SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd");
+
+        try {
+            if (acao instanceof AcoesMamifero) {
+                addSQL = conexao.prepareStatement("UPDATE AcoesMamifero SET beberAgua = ?, dataAcao=?, comerAlimento=?, qtdAlimento=?, passear=?, banho=?  WHERE id = ?");
+                AcoesMamifero ac = (AcoesMamifero) acao;
+                String formatted = format1.format(ac.getData());
+
+                //Adicionando parâmetros ao comando SQL
+                addSQL.setString(1, trueOrFalse(ac.isBeberAgua()));
+                addSQL.setString(2, formatted);
+                addSQL.setString(3, trueOrFalse(ac.isComerAlimento()));
+                addSQL.setFloat(4, ac.getQtdAlimento());
+                addSQL.setString(5, trueOrFalse(ac.isPassear()));
+                addSQL.setString(6, trueOrFalse(ac.isBanho()));
+                addSQL.setFloat(7, ac.getId());
+
+                //Executando a instrução SQL
+                int linhasAfetadas = addSQL.executeUpdate();
+
+                if (linhasAfetadas > 0) {
+                    retorno = true;
+                } else {
+                    retorno = false;
+                }
+                return retorno;
+
+            } else {
+                AcoesAve ac = (AcoesAve) acao;
+                addSQL = conexao.prepareStatement("UPDATE AcoesAve SET beberAgua = ?, dataAcao=?, comerAlimento=?, qtdAlimento=? WHERE id = ?");
+                String formatted = format1.format(ac.getData());
+
+                //Adicionando parâmetros ao comando SQL
+                addSQL.setString(1, trueOrFalse(ac.isBeberAgua()));
+                addSQL.setString(2, formatted);
+                addSQL.setString(3, trueOrFalse(ac.isComerAlimento()));
+                addSQL.setFloat(4, ac.getQtdAlimento());
+                addSQL.setFloat(5, ac.getId());
+                //Executando a instrução SQL
+                int linhasAfetadas = addSQL.executeUpdate();
+
+                if (linhasAfetadas > 0) {
+                    retorno = true;
+                } else {
+                    retorno = false;
+                }
+                return retorno;
+
+            }
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+            retorno = false;
+        } finally {
+            if (addSQL != null) {
+                try {
+                    addSQL.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(AnimalDAO.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
         return false;
     }
 

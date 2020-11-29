@@ -24,7 +24,14 @@ public class AcoesMamifero extends AcoesDiarias {
         this.passear = passear;
         this.banho = banho;
     }
+    public AcoesMamifero(boolean passear, boolean banho, int id, int idAnimal, Date data, boolean comerAlimento, boolean beberAgua, float qtdAlimento) {
+        super(id, idAnimal, data, comerAlimento, beberAgua, qtdAlimento);
+        this.passear = passear;
+        this.banho = banho;
+    }
 
+   
+    
     public boolean isPassear() {
         return passear;
     }
