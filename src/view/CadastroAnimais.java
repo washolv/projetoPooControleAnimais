@@ -423,7 +423,7 @@ public class CadastroAnimais extends javax.swing.JFrame {
             }
         }
         setarCamposNulos();
-        
+
     }//GEN-LAST:event_btnSalvarActionPerformed
     public void setarCamposNulos() {
         txtTipo.setText(null);
@@ -464,8 +464,7 @@ public class CadastroAnimais extends javax.swing.JFrame {
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         if (tblAnimal.getRowCount() > 0) {
             int numeroLinha = tblAnimal.getSelectedRow();
-            String idd = tblAnimal.getModel().getValueAt(numeroLinha, 0).toString();
-            int id = Integer.parseInt(idd);
+            int id = Integer.parseInt(tblAnimal.getModel().getValueAt(numeroLinha, 0).toString());
             String animal = (String) caixaAnimal.getSelectedItem();
             boolean retorno = controller.excluir(animal, id);
 
@@ -481,6 +480,8 @@ public class CadastroAnimais extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jButton3ActionPerformed
     private void CarregaTabela() {
+        DefaultTableModel modelo = (DefaultTableModel) tblAnimal.getModel();
+        modelo.setRowCount(0);
         ArrayList<Object> listaAnimal;
         listaAnimal = controller.pesquisar((String) caixaAnimal.getSelectedItem(), 0);
         for (Object animal : listaAnimal) {
@@ -495,8 +496,6 @@ public class CadastroAnimais extends javax.swing.JFrame {
 
     public void insereLinhaMamifero(Animal ani) {
         DefaultTableModel modelo = (DefaultTableModel) tblAnimal.getModel();
-        modelo.setRowCount(0);
-
         tblAnimal.getColumnModel().getColumn(0).setMinWidth(0);
         tblAnimal.getColumnModel().getColumn(0).setMaxWidth(0);
         tblAnimal.getColumnModel().getColumn(7).setMinWidth(100);
@@ -514,7 +513,6 @@ public class CadastroAnimais extends javax.swing.JFrame {
 
     public void insereLinhaAve(Animal ani) {
         DefaultTableModel modelo = (DefaultTableModel) tblAnimal.getModel();
-        modelo.setRowCount(0);
 
         tblAnimal.getColumnModel().getColumn(0).setMinWidth(0);
         tblAnimal.getColumnModel().getColumn(0).setMaxWidth(0);

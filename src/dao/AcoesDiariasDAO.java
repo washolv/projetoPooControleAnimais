@@ -38,7 +38,7 @@ public class AcoesDiariasDAO {
         try {
             conexao = ConexaoMySql.getConexaoMySQL();
             if (tipo.equals("Mamifero")) {
-                addSQL = conexao.prepareStatement("Select * from AcoesMamifero WHERE id=?");
+                addSQL = conexao.prepareStatement("Select * from AcoesMamifero WHERE idMamifero=?");
                 addSQL.setInt(1, id);
                 rs = addSQL.executeQuery();
                 Ave ave;
@@ -46,7 +46,7 @@ public class AcoesDiariasDAO {
                     AcoesDiarias acao = new AcoesMamifero(StringToBoolean(rs.getString("passear")),
                             StringToBoolean(rs.getString("banho")),
                             rs.getInt("id"),
-                            rs.getInt("idAnimal"),
+                            rs.getInt("idMamifero"),
                             rs.getDate("dataAcao"),
                             StringToBoolean(rs.getString("comerAlimento")),
                             StringToBoolean(rs.getString("beberAgua")),
@@ -54,7 +54,7 @@ public class AcoesDiariasDAO {
                     listarAcoes.add(acao);
                 }
             } else {
-                addSQL = conexao.prepareStatement("Select * from AcoesAve WHERE id=?");
+                addSQL = conexao.prepareStatement("Select * from AcoesAve WHERE idAve=?");
                 addSQL.setInt(1, id);
                 rs = addSQL.executeQuery();
                 Ave ave;
@@ -219,8 +219,44 @@ public class AcoesDiariasDAO {
         boolean retorno = false;
         PreparedStatement addSQL = null;
         conexao = ConexaoMySql.getConexaoMySQL();
+        int linhasAfetadas = 0;
         PreparedStatement instrucaoSQL = null;
-        return false;
+        try {
+            conexao = ConexaoMySql.getConexaoMySQL();
+            if (animal.equals("Mamifero")) {
+
+                addSQL = conexao.prepareStatement("DELETE FROM AcoesMamifero WHERE id = ?");
+                addSQL.setInt(1, id);
+
+                linhasAfetadas = addSQL.executeUpdate();
+            } else {
+                addSQL = conexao.prepareStatement("DELETE FROM AcoesAve WHERE id = ?");
+                addSQL.setInt(1, id);
+
+                linhasAfetadas = addSQL.executeUpdate();
+            }
+            if (linhasAfetadas > 0) {
+                retorno = true;
+            } else {
+                retorno = false;
+
+            }
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+            retorno = false;
+        } finally {
+
+            try {
+                if (addSQL != null) {
+                    addSQL.close();
+                }
+
+                conexao.close();
+
+            } catch (SQLException ex) {
+            }
+        }
+        return retorno;
     }
 
     public static String buscar(String tabela, int id) {

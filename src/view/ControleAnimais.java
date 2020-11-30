@@ -44,6 +44,7 @@ public class ControleAnimais extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jSpinner1 = new javax.swing.JSpinner();
         jPanel2 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblAcoesDiarias = new javax.swing.JTable();
@@ -335,7 +336,11 @@ public class ControleAnimais extends javax.swing.JFrame {
         });
 
         btnExcluir.setText("Excluir");
-        btnExcluir.setEnabled(false);
+        btnExcluir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnExcluirActionPerformed(evt);
+            }
+        });
 
         btnSalvar.setText("Salvar");
         btnSalvar.addActionListener(new java.awt.event.ActionListener() {
@@ -578,6 +583,9 @@ public class ControleAnimais extends javax.swing.JFrame {
     }
 
     private void CarregaTabela(JComboBox combo, JTextField id) {
+        DefaultTableModel modelo = (DefaultTableModel) tblAcoesDiarias.getModel();
+        modelo.setRowCount(0);
+
         ArrayList<Object> acoes;
         acoes = controller.pesquisar((String) combo.getSelectedItem(), Integer.parseInt(id.getText()));
         for (Object acao : acoes) {
@@ -591,8 +599,6 @@ public class ControleAnimais extends javax.swing.JFrame {
 
     public void insereAcaoMamifero(AcoesMamifero acao) {
         DefaultTableModel modelo = (DefaultTableModel) tblAcoesDiarias.getModel();
-        modelo.setRowCount(0);
-
         tblAcoesDiarias.getColumnModel().getColumn(0).setMinWidth(0);
         tblAcoesDiarias.getColumnModel().getColumn(0).setMaxWidth(0);
         tblAcoesDiarias.getColumnModel().getColumn(5).setMinWidth(100);
@@ -600,7 +606,7 @@ public class ControleAnimais extends javax.swing.JFrame {
         tblAcoesDiarias.getColumnModel().getColumn(6).setMinWidth(100);
         tblAcoesDiarias.getColumnModel().getColumn(6).setMaxWidth(100);
         modelo.addRow(new Object[]{
-            acao.getIdAnimal(),
+            acao.getId(),
             acao.getData(),
             trueOrFalse(acao.isComerAlimento()),
             acao.getQtdAlimento(),
@@ -611,8 +617,6 @@ public class ControleAnimais extends javax.swing.JFrame {
 
     public void insereAcaoAve(AcoesAve acao) {
         DefaultTableModel modelo = (DefaultTableModel) tblAcoesDiarias.getModel();
-        modelo.setRowCount(0);
-
         tblAcoesDiarias.getColumnModel().getColumn(0).setMinWidth(0);
         tblAcoesDiarias.getColumnModel().getColumn(0).setMaxWidth(0);
         tblAcoesDiarias.getColumnModel().getColumn(5).setMinWidth(0);
@@ -621,7 +625,7 @@ public class ControleAnimais extends javax.swing.JFrame {
         tblAcoesDiarias.getColumnModel().getColumn(6).setMaxWidth(0);
 
         modelo.addRow(new Object[]{
-            acao.getIdAnimal(),
+            acao.getId(),
             acao.getData(),
             trueOrFalse(acao.isComerAlimento()),
             acao.getQtdAlimento(),
@@ -641,6 +645,7 @@ public class ControleAnimais extends javax.swing.JFrame {
 
     private void btnAlterarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAlterarActionPerformed
         modoTela = "Alteração";
+        setarCamposEditaveis();
         if (((String) comboAnimal.getSelectedItem()).equals("Mamifero")) {
             comboAnimal2.setSelectedIndex(1);
             inserirCampos("Mamifero");
@@ -648,13 +653,29 @@ public class ControleAnimais extends javax.swing.JFrame {
             comboAnimal2.setSelectedIndex(2);
             inserirCampos("Ave");
         }
-        setarCamposEditaveis();
-        
+
     }//GEN-LAST:event_btnAlterarActionPerformed
 
     private void comboBebeuAguaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboBebeuAguaActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_comboBebeuAguaActionPerformed
+
+    private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
+        if (tblAcoesDiarias.getRowCount() > 0) {
+            int id = Integer.parseInt(tblAcoesDiarias.getModel().getValueAt(tblAcoesDiarias.getSelectedRow(), 0).toString());
+            String animal = (String) comboAnimal.getSelectedItem();
+            boolean retorno = controller.excluir(animal, id);
+
+            if (retorno == true) {
+                JOptionPane.showMessageDialog(null, "Acao excluida com Sucesso", "Exclusão realizada", JOptionPane.INFORMATION_MESSAGE);
+                CarregaTabela(comboAnimal, txtNumCadastro);
+            } else {
+                JOptionPane.showMessageDialog(null, "Falha ao excluir Acao!", "Falha", JOptionPane.ERROR_MESSAGE);
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "Selecione uma Acao da tabela para excluir!");
+        }
+    }//GEN-LAST:event_btnExcluirActionPerformed
 
     public void inserirCampos(String tipo) {
         if (tblAcoesDiarias.getRowCount() > 0) {
@@ -688,7 +709,6 @@ public class ControleAnimais extends javax.swing.JFrame {
 
         } else {
             JOptionPane.showMessageDialog(this, "Selecione um animal da tabela!");
-
         }
     }
 
@@ -752,6 +772,7 @@ public class ControleAnimais extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JSpinner jSpinner1;
     private javax.swing.JLabel lblBanho;
     private javax.swing.JLabel lblNumCadastro;
     private javax.swing.JLabel lblPasseou;
